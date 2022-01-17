@@ -1,22 +1,27 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Sketch extends PApplet {
 	
   public float textX = 250;
   public float textY = 350;
+  PImage img;
 
   public void settings() {
-    size(1000, 1000);
+    size(1500, 1000);
   }
 
 
   public void setup() {
     background(210, 255, 173);
+    img = loadImage("Abandoned.Asylum.jpg");
+
   }
 
   public void draw() {
 	  
-    textbox();
+
+    image(img, 0, 0);
 
   }
 

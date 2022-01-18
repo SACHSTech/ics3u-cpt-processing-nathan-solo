@@ -22,6 +22,7 @@ public class Sketch extends PApplet {
 	  
 
     image(img, 0, 0);
+    textbox();
 
   }
 
@@ -30,6 +31,10 @@ public class Sketch extends PApplet {
     fill(0);
 
     rect(200, 300, 600, 300);
+
+    stroke(255);
+    fill(255, 0, 0);
+    //ellipse()
   }
   
   // define other methods down here.

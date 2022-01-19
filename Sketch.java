@@ -90,6 +90,7 @@ public class Sketch extends PApplet {
         fill(0, 0, 0, 210);
         rect(0, 0, 1500, 1000);
         
+        printToy1();
         //image(S, 300, 450);
         image(H, 550, 450);
         image(U, 800, 450);
@@ -98,15 +99,17 @@ public class Sketch extends PApplet {
         
 
         if (mouseX >= 300 && mouseX <= 410 && mouseY >= 450 && mouseY <= 560){
+          toyBox1();
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
           rect(300, 450, 110, 110);
-          toyBox1();
+          
         } else if (mouseX >= 550 && mouseX <= 660 && mouseY >= 450 && mouseY <= 560){
+          //toyBox2();
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
           rect(550, 450, 110, 110);
-          //toyBox2();
+          
         }
       
 
@@ -139,54 +142,10 @@ public class Sketch extends PApplet {
 
     char holder;
     
-    printToy1();
-    
+
 
     if (keyPressed) {
       if (keyCode == UP) {
-        //did not add 4 and 5 up
-        /*if (toyBox1Front == 0){
-          
-          toyBox1Front = 1; 
-          toyBox1[0] = toyBox1[1];
-
-          for (int i = 5; i > 0; i--){
-
-            toyBox1[i] = toyBox1[i-1];
-            printToy1();
-          }
-        } else if (toyBox1Front == 1){
-          
-          toyBox1Front = 2;
-          toyBox1[0] = toyBox1[1];
-
-          for (int i = 5; i > 0; i--){
-
-            toyBox1[i] = toyBox1[i-1];
-            printToy1();
-          }
-        } else if (toyBox1Front == 2){
-          
-          toyBox1Front = 3;
-          toyBox1[0] = toyBox1[1];
-
-          for (int i = 5; i > 0; i--){
-
-            toyBox1[i] = toyBox1[i-1];
-            printToy1();
-          }
-        } else if (toyBox1Front == 3){
-          
-          toyBox1Front = 0;
-          toyBox1[0] = toyBox1[1];
-
-          for (int i = 5; i > 0; i--){
-
-            toyBox1[i] = toyBox1[i-1];
-            printToy1();
-          }
-
-        }*/
         
         holder = toyBox1[0];
 
@@ -195,7 +154,17 @@ public class Sketch extends PApplet {
         toyBox1[2] = toyBox1[3];
         toyBox1[3] = holder;
 
+      } else if (keyCode == DOWN) {
+
+        holder = toyBox1[0];
+
+        toyBox1[0] = toyBox1[3];
+        toyBox1[3] = toyBox1[2];
+        toyBox1[2] = toyBox1[1];
+        
+
       }
+      
 
     }
 

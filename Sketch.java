@@ -19,11 +19,16 @@ public class Sketch extends PApplet {
   PImage U;
   PImage I;
 
-  public char[] toyBox1 = {'S', 'T', 'H', 'A', 'N', '9'};
+  public char[] toyBox1 = {'S', 'T', 'H', 'A', 'N', 'U'};
   public char[] toyBox2 = {'H', 'E', 'I', 'N', 'T', 'A'};
   public char[] toyBox3 = {'U', 'I', 'E', 'N', 'S', 'O'};
   public char[] toyBox4 = {'E', 'H', 'T', 'S', 'N', 'I'};
+  //public ArrayList<PImage> toyBox = new ArrayList<PImage>();
 
+  public float toyBox1Front = 0;
+  public float toyBox2Front = 0;
+  public float toyBox3Front = 0;
+  public float toyBox4Front = 0;
   /*
   scene -1 = background with open safe (background -1)
   scene 0 = background with no painting (background 0)
@@ -80,45 +85,32 @@ public class Sketch extends PApplet {
 
     } else if (scene == 2) {
         image(Background, 0, 0);
-
-        fill(0);
-        rect(300, 450, 100, 100);
-        
-        image(S, 300, 450);
-        image(H, 550, 450);
-        image(U, 800, 450);
-        image(E, 1050, 450);
-
          
         stroke(0);
         fill(0, 0, 0, 210);
         rect(0, 0, 1500, 1000);
         
-        image(S, 300, 450);
+        //image(S, 300, 450);
         image(H, 550, 450);
         image(U, 800, 450);
         image(E, 1050, 450);
+
+        
 
         if (mouseX >= 300 && mouseX <= 410 && mouseY >= 450 && mouseY <= 560){
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
           rect(300, 450, 110, 110);
+          toyBox1();
+        } else if (mouseX >= 550 && mouseX <= 660 && mouseY >= 450 && mouseY <= 560){
+          stroke(255, 255, 255, 50);
+          fill(255, 255, 255, 50);
+          rect(550, 450, 110, 110);
+          //toyBox2();
         }
-      
-        //image(toyBox1[i], 250, 450);
       
 
       }
-
-
-
-
-
-
-
-
-
-
 
 }
 
@@ -143,16 +135,97 @@ public class Sketch extends PApplet {
     }
   }
   
-  public void toyBox() {
+  public void toyBox1() {
+
+    char holder;
+    
+    printToy1();
+    
 
     if (keyPressed) {
-
       if (keyCode == UP) {
+        //did not add 4 and 5 up
+        /*if (toyBox1Front == 0){
+          
+          toyBox1Front = 1; 
+          toyBox1[0] = toyBox1[1];
+
+          for (int i = 5; i > 0; i--){
+
+            toyBox1[i] = toyBox1[i-1];
+            printToy1();
+          }
+        } else if (toyBox1Front == 1){
+          
+          toyBox1Front = 2;
+          toyBox1[0] = toyBox1[1];
+
+          for (int i = 5; i > 0; i--){
+
+            toyBox1[i] = toyBox1[i-1];
+            printToy1();
+          }
+        } else if (toyBox1Front == 2){
+          
+          toyBox1Front = 3;
+          toyBox1[0] = toyBox1[1];
+
+          for (int i = 5; i > 0; i--){
+
+            toyBox1[i] = toyBox1[i-1];
+            printToy1();
+          }
+        } else if (toyBox1Front == 3){
+          
+          toyBox1Front = 0;
+          toyBox1[0] = toyBox1[1];
+
+          for (int i = 5; i > 0; i--){
+
+            toyBox1[i] = toyBox1[i-1];
+            printToy1();
+          }
+
+        }*/
         
+        holder = toyBox1[0];
+
+        toyBox1[0] = toyBox1[1];
+        toyBox1[1] = toyBox1[2];
+        toyBox1[2] = toyBox1[3];
+        toyBox1[3] = holder;
 
       }
+
     }
 
 
   }
+
+  public void printToy1() {
+    float x = 300;
+    float y = 450;
+
+    if (toyBox1[0] == 'S'){
+      image(S, x, y);
+    }
+    if (toyBox1[0] == 'T'){
+      image(T, x, y);
+    }
+    if (toyBox1[0] == 'H'){
+      image(H, x, y);
+    }
+    if (toyBox1[0] == 'A'){
+      image(A, x, y);
+    }
+    if (toyBox1[0] == 'N'){
+      image(N, x, y);
+    }
+    if (toyBox1[0] == 'U'){
+      image(U, x, y);
+    }
+
+  }
+
+
 }

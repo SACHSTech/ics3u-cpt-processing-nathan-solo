@@ -8,6 +8,21 @@ public class Sketch extends PApplet {
   public float textY = 350;
   
   PImage Background;
+  PImage Nine;
+  PImage A;
+  PImage E;
+  PImage H;
+  PImage N;
+  PImage O;
+  PImage S;
+  PImage T;
+  PImage U;
+  PImage I;
+
+  public char[] toyBox1 = {'S', 'T', 'H', 'A', 'N', '9'};
+  public char[] toyBox2 = {'H', 'E', 'I', 'N', 'T', 'A'};
+  public char[] toyBox3 = {'U', 'I', 'E', 'N', 'S', 'O'};
+  public char[] toyBox4 = {'E', 'H', 'T', 'S', 'N', 'I'};
 
   /*
   scene -1 = background with open safe (background -1)
@@ -34,8 +49,19 @@ public class Sketch extends PApplet {
 
 
   public void setup() {
-    background(210, 255, 173);
+
+    
     Background = loadImage("Abandoned.Asylum.jpg");
+    Nine = loadImage("Nine.jpg");
+    A = loadImage("A.jpg");
+    E = loadImage("E.jpg");
+    H = loadImage("H.jpg");
+    I = loadImage("I.jpg");
+    N = loadImage("N.jpg");
+    O = loadImage("O.jpg");
+    S = loadImage("S.jpg");
+    T = loadImage("T.jpg");
+    U = loadImage("U.jpg");
 
   }
 
@@ -54,10 +80,34 @@ public class Sketch extends PApplet {
 
     } else if (scene == 2) {
         image(Background, 0, 0);
+
+        fill(0);
+        rect(300, 450, 100, 100);
         
+        image(S, 300, 450);
+        image(H, 550, 450);
+        image(U, 800, 450);
+        image(E, 1050, 450);
+
+         
         stroke(0);
         fill(0, 0, 0, 210);
         rect(0, 0, 1500, 1000);
+        
+        image(S, 300, 450);
+        image(H, 550, 450);
+        image(U, 800, 450);
+        image(E, 1050, 450);
+
+        if (mouseX >= 300 && mouseX <= 410 && mouseY >= 450 && mouseY <= 560){
+          stroke(255, 255, 255, 50);
+          fill(255, 255, 255, 50);
+          rect(300, 450, 110, 110);
+        }
+      
+        //image(toyBox1[i], 250, 450);
+      
+
       }
 
 
@@ -93,5 +143,16 @@ public class Sketch extends PApplet {
     }
   }
   
-  // define other methods down here.
+  public void toyBox() {
+
+    if (keyPressed) {
+
+      if (keyCode == UP) {
+        
+
+      }
+    }
+
+
+  }
 }

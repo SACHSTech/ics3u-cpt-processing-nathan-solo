@@ -7,7 +7,6 @@ public class Sketch extends PApplet {
   public float textX = 250;
   public float textY = 350;
   
-  PImage Background;
   PImage Nine;
   PImage A;
   PImage E;
@@ -18,6 +17,10 @@ public class Sketch extends PApplet {
   PImage T;
   PImage U;
   PImage I;
+  
+  PImage Painting;
+  PImage BackgroundOpenSafe;
+  PImage BackgroundWithoutPicture;
 
   public char[] toyBox1 = {'S', 'T', 'H', 'A', 'N', 'U'};
   public char[] toyBox2 = {'H', 'E', 'I', 'N', 'T', 'A'};
@@ -29,13 +32,12 @@ public class Sketch extends PApplet {
   public float toyBox2Front = 0;
   public float toyBox3Front = 0;
   public float toyBox4Front = 0;
+
   /*
-  scene -1 = background with open safe (background -1)
-  scene 0 = background with no painting (background 0)
   scene 1 = original background (background 1)
   scene 2 = toys
   scene 3 = page
-  scene 4 = page 2  
+  scene 4 = page 2 (in the safe with how to input the numbers)  
   scene 4 = window
   scene 5 = door
   scene 6 = bed
@@ -48,6 +50,8 @@ public class Sketch extends PApplet {
   // to make sure the player does not guess the code. 
   public float step;
 
+  public boolean Activityopen;
+
   public void settings() {
     size(1500, 1000);
   }
@@ -55,8 +59,12 @@ public class Sketch extends PApplet {
 
   public void setup() {
 
+    Painting = loadImage("Painting.png");
+    BackgroundOpenSafe = loadImage("BackgroundOpenSafe.jpg");
+    BackgroundWithoutPicture = loadImage("BackgroundWithoutPicture");
+
     
-    Background = loadImage("Abandoned.Asylum.jpg");
+  
     Nine = loadImage("Nine.jpg");
     A = loadImage("A.jpg");
     E = loadImage("E.jpg");
@@ -72,31 +80,37 @@ public class Sketch extends PApplet {
 
   public void draw() {
 	  
-    if (scene == 1 && background == 1) {
-      image(Background, 0, 0);
+    if (scene == 1) {
+      Background();
 
       if (mousePressed){
 
         if (mouseX >= 206 && mouseX <= 366 && mouseY >= 690 && mouseY <= 840){
           scene = 2;
-        
         }
+        if (mouseX >= 268 && mouseX <= 354 && mouseY >= 932 && mouseY <= 970){
+          scene = 3;
+        }
+
       }
 
     } else if (scene == 2) {
-        image(Background, 0, 0);
+        Activityopen = true;
+        Background();
          
         stroke(0);
         fill(0, 0, 0, 210);
         rect(0, 0, 1500, 1000);
         
+        //print box
         printToy1();
         printToy2();
         printToy3();
         printToy4();
 
-        
+        exit();
 
+        //highlight box and calls method to change the side of said box
         if (mouseX >= 300 && mouseX <= 410 && mouseY >= 450 && mouseY <= 560){
           toyBox1();
           stroke(255, 255, 255, 50);
@@ -121,31 +135,74 @@ public class Sketch extends PApplet {
           fill(255, 255, 255, 50);
           rect(1050, 450, 110, 110);
         }
+      } else if (scene == 3) {
+        Activityopen = true; 
+        Background();
+         
+        stroke(0);
+        fill(0, 0, 0, 210);
+        rect(0, 0, 1500, 1000);
+
+        //not done
+        exit();
+
+      } else if (scene == 4) {
+        Activityopen = true;
+        
       }
 
 }
 
+  /*
+  * Prints the correct background based on how far into the game
+  */
+  public void Background() {
+
+    if (background == 1) {
+      image(BackgroundWithoutPicture, 0, 0);
+      image(Painting, 0, 0);
+    }
+    if (background == 2) {
+      image(BackgroundWithoutPicture, 0, 0);
+    }
+    if (background == 3) {
+      image(BackgroundOpenSafe, 0, 0);
+    }
+  }
+
+  /*
+  * Prints a textbox
+  */
   public void textbox() {
     stroke(255);
     fill(88, 85, 90);
 
     rect(200, 300, 1100, 400);
+  }
 
+  /*
+  * Prints an exit circle
+  */
+  public void exit() {
     stroke(255);
     fill(255, 0, 0);
 
-    ellipse(1250, 350, 50, 50);
+    ellipse(1400, 100, 50, 50);
     
-    line(1240, 340, 1260, 360);
-    line(1260, 340, 1240, 360);
+    line(1390, 90, 1410, 110);
+    line(1410, 90, 1390, 110);
 
     if (mousePressed){
-      if (mouseX > 1200 && mouseX < 1300 && mouseY > 300 && mouseY < 400){
-
+      if (mouseX >= 1350 && mouseX <= 1450 && mouseY >= 50 && mouseY <= 150){
+        Activityopen = false;
+        scene = 1;
       }
     }
   }
   
+  /*
+  * checks if keycodes have been pressed for toybox 1 then changes the sides of the box accordingly 
+  */
   public void toyBox1() {
 
     char holder;
@@ -190,6 +247,9 @@ public class Sketch extends PApplet {
     }
   }
 
+  /*
+  * checks if keycodes have been pressed for toybox 2 then changes the sides of the box accordingly 
+  */
   public void toyBox2() {
 
     char holder;
@@ -234,6 +294,9 @@ public class Sketch extends PApplet {
     }
   }
 
+  /*
+  * checks if keycodes have been pressed for toybox 3 then changes the sides of the box accordingly 
+  */
   public void toyBox3() {
 
     char holder;
@@ -278,6 +341,9 @@ public class Sketch extends PApplet {
     }
   }
 
+  /*
+  * checks if keycodes have been pressed for toybox 4 then changes the sides of the box accordingly 
+  */
   public void toyBox4() {
 
     char holder;
@@ -322,6 +388,9 @@ public class Sketch extends PApplet {
     }
   }
 
+  /*
+  * Prints the correct letter for toybox 1
+  */
   public void printToy1() {
     float x = 300;
     float y = 450;
@@ -347,6 +416,9 @@ public class Sketch extends PApplet {
 
   }
 
+  /*
+  * Prints the correct letter for toybox 2
+  */
   public void printToy2() {
     float x = 550;
     float y = 450;
@@ -372,6 +444,9 @@ public class Sketch extends PApplet {
 
   }
 
+  /*
+  * Prints the correct letter for toybox 3
+  */
   public void printToy3() {
     float x = 800;
     float y = 450;
@@ -397,6 +472,9 @@ public class Sketch extends PApplet {
 
   }
 
+  /*
+  * Prints the correct letter for toybox 4
+  */
   public void printToy4() {
     float x = 1050;
     float y = 450;

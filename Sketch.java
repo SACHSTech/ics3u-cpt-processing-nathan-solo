@@ -91,10 +91,9 @@ public class Sketch extends PApplet {
         rect(0, 0, 1500, 1000);
         
         printToy1();
-        //image(S, 300, 450);
-        image(H, 550, 450);
-        image(U, 800, 450);
-        image(E, 1050, 450);
+        printToy2();
+        printToy3();
+        printToy4();
 
         
 
@@ -105,14 +104,23 @@ public class Sketch extends PApplet {
           rect(300, 450, 110, 110);
           
         } else if (mouseX >= 550 && mouseX <= 660 && mouseY >= 450 && mouseY <= 560){
-          //toyBox2();
+          toyBox2();
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
           rect(550, 450, 110, 110);
           
+        } else if (mouseX >= 800 && mouseX <= 910 && mouseY >= 450 && mouseY <= 560){
+          toyBox3();
+          stroke(255, 255, 255, 50);
+          fill(255, 255, 255, 50);
+          rect(800, 450, 110, 110);
+          
+        } else if (mouseX >= 1050 && mouseX <= 1200 && mouseY >= 450 && mouseY <=560){
+          toyBox4();
+          stroke(255, 255, 255, 50);
+          fill(255, 255, 255, 50);
+          rect(1050, 450, 110, 110);
         }
-      
-
       }
 
 }
@@ -142,8 +150,6 @@ public class Sketch extends PApplet {
 
     char holder;
     
-
-
     if (keyPressed) {
       if (keyCode == UP) {
         
@@ -161,14 +167,159 @@ public class Sketch extends PApplet {
         toyBox1[0] = toyBox1[3];
         toyBox1[3] = toyBox1[2];
         toyBox1[2] = toyBox1[1];
-        
+        toyBox1[1] = holder;
 
+      } else if (keyCode == LEFT) {
+
+        holder = toyBox1[0];
+
+        toyBox1[0] = toyBox1[4];
+        toyBox1[4] = toyBox1[2];
+        toyBox1[2] = toyBox1[5];
+        toyBox1[5] = holder;
+
+      } else if (keyCode == RIGHT) {
+
+        holder = toyBox1[0];
+
+        toyBox1[0] = toyBox1[5];
+        toyBox1[5] = toyBox1[2];
+        toyBox1[2] = toyBox1[4];
+        toyBox1[4] = holder;
       }
-      
-
     }
+  }
 
+  public void toyBox2() {
 
+    char holder;
+    
+    if (keyPressed) {
+      if (keyCode == UP) {
+        
+        holder = toyBox2[0];
+
+        toyBox2[0] = toyBox2[1];
+        toyBox2[1] = toyBox2[2];
+        toyBox2[2] = toyBox2[3];
+        toyBox2[3] = holder;
+
+      } else if (keyCode == DOWN) {
+
+        holder = toyBox2[0];
+
+        toyBox2[0] = toyBox2[3];
+        toyBox2[3] = toyBox2[2];
+        toyBox2[2] = toyBox2[1];
+        toyBox2[1] = holder;
+
+      } else if (keyCode == LEFT) {
+
+        holder = toyBox2[0];
+
+        toyBox2[0] = toyBox2[4];
+        toyBox2[4] = toyBox2[2];
+        toyBox2[2] = toyBox2[5];
+        toyBox2[5] = holder;
+
+      } else if (keyCode == RIGHT) {
+
+        holder = toyBox2[0];
+
+        toyBox2[0] = toyBox2[5];
+        toyBox2[5] = toyBox2[2];
+        toyBox2[2] = toyBox2[4];
+        toyBox2[4] = holder;
+      }
+    }
+  }
+
+  public void toyBox3() {
+
+    char holder;
+    
+    if (keyPressed) {
+      if (keyCode == UP) {
+        
+        holder = toyBox3[0];
+
+        toyBox3[0] = toyBox3[1];
+        toyBox3[1] = toyBox3[2];
+        toyBox3[2] = toyBox3[3];
+        toyBox3[3] = holder;
+
+      } else if (keyCode == DOWN) {
+
+        holder = toyBox3[0];
+
+        toyBox3[0] = toyBox3[3];
+        toyBox3[3] = toyBox3[2];
+        toyBox3[2] = toyBox3[1];
+        toyBox3[1] = holder;
+
+      } else if (keyCode == LEFT) {
+
+        holder = toyBox3[0];
+
+        toyBox3[0] = toyBox3[4];
+        toyBox3[4] = toyBox3[2];
+        toyBox3[2] = toyBox3[5];
+        toyBox3[5] = holder;
+
+      } else if (keyCode == RIGHT) {
+
+        holder = toyBox3[0];
+
+        toyBox3[0] = toyBox3[5];
+        toyBox3[5] = toyBox3[2];
+        toyBox3[2] = toyBox3[4];
+        toyBox3[4] = holder;
+      }
+    }
+  }
+
+  public void toyBox4() {
+
+    char holder;
+    
+    if (keyPressed) {
+      if (keyCode == UP) {
+        
+        holder = toyBox4[0];
+
+        toyBox4[0] = toyBox4[1];
+        toyBox4[1] = toyBox4[2];
+        toyBox4[2] = toyBox4[3];
+        toyBox4[3] = holder;
+
+      } else if (keyCode == DOWN) {
+
+        holder = toyBox4[0];
+
+        toyBox4[0] = toyBox4[3];
+        toyBox4[3] = toyBox4[2];
+        toyBox4[2] = toyBox4[1];
+        toyBox4[1] = holder;
+
+      } else if (keyCode == LEFT) {
+
+        holder = toyBox4[0];
+
+        toyBox4[0] = toyBox4[4];
+        toyBox4[4] = toyBox4[2];
+        toyBox4[2] = toyBox4[5];
+        toyBox4[5] = holder;
+
+      } else if (keyCode == RIGHT) {
+
+        holder = toyBox4[0];
+
+        toyBox4[0] = toyBox4[5];
+        toyBox4[5] = toyBox4[2];
+        toyBox4[2] = toyBox4[4];
+        toyBox4[4] = holder;
+      }
+    }
   }
 
   public void printToy1() {
@@ -192,6 +343,81 @@ public class Sketch extends PApplet {
     }
     if (toyBox1[0] == 'U'){
       image(U, x, y);
+    }
+
+  }
+
+  public void printToy2() {
+    float x = 550;
+    float y = 450;
+
+    if (toyBox2[0] == 'H'){
+      image(H, x, y);
+    }
+    if (toyBox2[0] == 'E'){
+      image(E, x, y);
+    }
+    if (toyBox2[0] == 'I'){
+      image(I, x, y);
+    }
+    if (toyBox2[0] == 'N'){
+      image(N, x, y);
+    }
+    if (toyBox2[0] == 'T'){
+      image(T, x, y);
+    }
+    if (toyBox2[0] == 'A'){
+      image(A, x, y);
+    }
+
+  }
+
+  public void printToy3() {
+    float x = 800;
+    float y = 450;
+
+    if (toyBox3[0] == 'U'){
+      image(U, x, y);
+    }
+    if (toyBox3[0] == 'I'){
+      image(I, x, y);
+    }
+    if (toyBox3[0] == 'E'){
+      image(E, x, y);
+    }
+    if (toyBox3[0] == 'N'){
+      image(N, x, y);
+    }
+    if (toyBox3[0] == 'S'){
+      image(S, x, y);
+    }
+    if (toyBox3[0] == 'O'){
+      image(O, x, y);
+    }
+
+  }
+
+  public void printToy4() {
+    float x = 1050;
+    float y = 450;
+
+    if (toyBox4[0] == 'E'){
+      image(E, x, y);
+    }
+    if (toyBox4[0] == 'H'){
+      image(H, x, y);
+    }
+    if (toyBox4[0] == 'T'){
+      image(T, x, y);
+    }
+    if (toyBox4[0] == 'S'){
+      image(S, x, y);
+    }
+    if (toyBox4[0] == 'N'){
+      image(N, x, y);
+    }
+    if (toyBox4[0] == 'I'){
+      image(I, x, y);
     }
 
   }

@@ -7,7 +7,8 @@ public class Sketch extends PApplet {
   public float textX = 250;
   public float textY = 350;
   
-  PImage Nine;
+  PImage Bed;
+ 
   PImage A;
   PImage E;
   PImage H;
@@ -52,6 +53,9 @@ public class Sketch extends PApplet {
 
   public boolean Activityopen;
 
+  public float[] DarkX = new float[1500];
+  public float[] DarkY = new float[1000];
+
   public void settings() {
     size(1500, 1000);
   }
@@ -63,9 +67,6 @@ public class Sketch extends PApplet {
     BackgroundOpenSafe = loadImage("BackgroundOpenSafe.jpg");
     BackgroundWithoutPicture = loadImage("BackgroundWithoutPicture.jpg");
 
-    
-  
-    Nine = loadImage("Nine.jpg");
     A = loadImage("A.jpg");
     E = loadImage("E.jpg");
     H = loadImage("H.jpg");
@@ -75,6 +76,8 @@ public class Sketch extends PApplet {
     S = loadImage("S.jpg");
     T = loadImage("T.jpg");
     U = loadImage("U.jpg");
+
+    Bed = loadImage("Bed.jpg");
 
   }
 
@@ -91,8 +94,17 @@ public class Sketch extends PApplet {
         if (mouseX >= 180 && mouseX <= 354 && mouseY >= 890 && mouseY <= 970){
           scene = 3;
         }
-        if (mouseX >= 100 && mouseX <=328 && mouseY >= 135 && mouseY <= 596) {
-          scene = 4;
+        if (mouseX >= 100 && mouseX <= 328 && mouseY >= 135 && mouseY <= 596){
+          scene = 5;
+        } 
+        if (mouseX >= 577 && mouseX <= 672 && mouseY >= 270 && mouseY <= 560){
+          scene = 5;
+        } 
+        if (mouseX >= 920 && mouseX <= 1067 && mouseY >= 318 && mouseY <= 746){
+          scene = 6;
+        } 
+        if (mouseX >= 1231 && mouseY >= 609){
+          scene = 7;
         }
 
       }
@@ -156,6 +168,45 @@ public class Sketch extends PApplet {
       } else if(scene == 5) {
         Activityopen = true;
         //image(Outdoor, 0, 0);
+
+        exit();
+      } else if(scene == 6) {
+        Activityopen = true;
+
+        stroke(0);
+        fill(0, 0, 0, 210);
+        rect(0, 0, 1500, 1000);
+
+        exit();
+      } else if(scene == 7) {
+        Activityopen = true;
+
+        image(Bed, 0, 0);
+
+        for (int i = 0; i < DarkY.length; i++){
+          DarkY[i] = i;
+        }
+        for (int i = 0; i < DarkX.length; i++){
+          DarkX[i] = i;
+        }
+
+        for (int i = 0; i < DarkY.length; i++){
+          for (int j = 0; j <DarkX.length; j++){
+
+            if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
+              stroke(255, 255, 255, 50);
+              fill(255, 255, 255, 50);
+              point(DarkX[j], DarkY[i]);
+
+            } else {
+              stroke(0, 0, 0, 255);
+              stroke(0, 0, 0, 255);
+              point(DarkX[j], DarkY[i]);
+            }
+          }
+        }
+
+
 
         exit();
       }

@@ -38,10 +38,10 @@ public class Sketch extends PApplet {
   scene 2 = toys
   scene 3 = page
   scene 4 = page 2 (in the safe with how to input the numbers)  
-  scene 4 = window
-  scene 5 = door
-  scene 6 = bed
-  scene 7 = text
+  scene 5 = window
+  scene 6 = door
+  scene 7 = bed
+  scene 8 = text
   */
 
   public float scene = 1;
@@ -61,7 +61,7 @@ public class Sketch extends PApplet {
 
     Painting = loadImage("Painting.png");
     BackgroundOpenSafe = loadImage("BackgroundOpenSafe.jpg");
-    BackgroundWithoutPicture = loadImage("BackgroundWithoutPicture");
+    BackgroundWithoutPicture = loadImage("BackgroundWithoutPicture.jpg");
 
     
   
@@ -88,8 +88,11 @@ public class Sketch extends PApplet {
         if (mouseX >= 206 && mouseX <= 366 && mouseY >= 690 && mouseY <= 840){
           scene = 2;
         }
-        if (mouseX >= 268 && mouseX <= 354 && mouseY >= 932 && mouseY <= 970){
+        if (mouseX >= 180 && mouseX <= 354 && mouseY >= 890 && mouseY <= 970){
           scene = 3;
+        }
+        if (mouseX >= 100 && mouseX <=328 && mouseY >= 135 && mouseY <= 596) {
+          scene = 4;
         }
 
       }
@@ -148,7 +151,13 @@ public class Sketch extends PApplet {
 
       } else if (scene == 4) {
         Activityopen = true;
+
         
+      } else if(scene == 5) {
+        Activityopen = true;
+        //image(Outdoor, 0, 0);
+
+        exit();
       }
 
 }

@@ -56,6 +56,8 @@ public class Sketch extends PApplet {
   public float[] DarkX = new float[1500];
   public float[] DarkY = new float[1000];
 
+  public float angle = radians(0);
+
   public void settings() {
     size(1500, 1000);
   }
@@ -193,16 +195,40 @@ public class Sketch extends PApplet {
         for (int i = 0; i < DarkY.length; i++){
           for (int j = 0; j <DarkX.length; j++){
 
-            if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
-              stroke(255, 255, 255, 50);
-              fill(255, 255, 255, 50);
-              point(DarkX[j], DarkY[i]);
+            int inside = 0;
+            int notinside = 0;
+            while (inside != -1){
 
-            } else {
+              /* if (i >= mouseY + sin(angle) * 100 && i <= mouseY + 100 && j >= mouseX + cos(angle) * 100 && j <= mouseX + cos(PI/2 - angle)){
+                inside = -1;
+              }
+
+              angle = angle + radians(1);
+
+              if (angle >= 2 * PI) {
+                inside = -1;
+                notinside = -1;
+                
+              } */
+
+              if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
+                inside = -1;
+                } else {
+                  inside = -1;
+                  notinside = -1;
+                }
+
+            }
+
+            //if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
+              
+            //} else {
+              if (notinside == -1){
               stroke(0, 0, 0, 255);
               stroke(0, 0, 0, 255);
               point(DarkX[j], DarkY[i]);
-            }
+              }
+            //}
           }
         }
 

@@ -25,6 +25,17 @@ public class Sketch extends PApplet {
   PImage BackgroundOpenSafe;
   PImage BackgroundWithoutPicture;
 
+  PImage Zero;
+  PImage One;
+  PImage Two;
+  PImage Three;
+  PImage Four;
+  PImage Five;
+  PImage Six;
+  PImage Seven;
+  PImage Eight;
+  PImage Nine;
+
   public char[] toyBox1 = {'S', 'T', 'H', 'A', 'N', 'U'};
   public char[] toyBox2 = {'H', 'E', 'I', 'N', 'T', 'A'};
   public char[] toyBox3 = {'U', 'I', 'E', 'N', 'S', 'O'};
@@ -84,6 +95,17 @@ public class Sketch extends PApplet {
     Bed = loadImage("Bed.jpg");
     Flashlight = loadImage("Flashlight.png");
     Outside = loadImage("Outside.jpg");
+
+    Zero = loadImage("0.jpg");
+    One = loadImage("1.jpg");
+    Two = loadImage("2.jpg");
+    Three = loadImage("3.jpg");
+    Four = loadImage("4.jpg");
+    Five = loadImage("5.jpg");
+    Six = loadImage("6.jpg");
+    Seven = loadImage("7.jpg");
+    Eight = loadImage("8.jpg");
+    Nine = loadImage("9.jpg");
 
   }
 
@@ -153,6 +175,7 @@ public class Sketch extends PApplet {
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
           rect(1050, 450, 110, 110);
+
         }
       } else if (scene == 3) {
         Activityopen = true; 
@@ -165,6 +188,7 @@ public class Sketch extends PApplet {
       } else if (scene == 4) {
         Activityopen = true;
 
+        exit();
         
       } else if(scene == 5) {
         Activityopen = true;
@@ -179,9 +203,12 @@ public class Sketch extends PApplet {
       } else if(scene == 6) {
         Activityopen = true;
 
+        Door();
+
         DarkBackground();
 
         exit();
+
       } else if(scene == 7) {
         Activityopen = true;
 
@@ -632,6 +659,22 @@ public class Sketch extends PApplet {
     if (toyBox4[0] == 'I'){
       image(I, x, y);
     }
+
+  }
+
+  public void Door() {
+
+    image(One, 525, 300);
+    image(Two, 675, 300);
+    image(Three, 825, 300);
+    image(Four, 525, 450);
+    image(Five, 675, 450);
+    image(Six, 825, 450);
+    image(Seven, 525, 600);
+    image(Eight, 675, 600);
+    image(Nine, 825, 600);
+    image(Zero, 675, 750);
+
 
   }
 

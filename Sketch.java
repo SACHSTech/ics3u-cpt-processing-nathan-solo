@@ -8,6 +8,8 @@ public class Sketch extends PApplet {
   public float textY = 350;
   
   PImage Bed;
+  PImage Flashlight;
+  PImage Outside;
  
   PImage A;
   PImage E;
@@ -53,10 +55,10 @@ public class Sketch extends PApplet {
 
   public boolean Activityopen;
 
-  public float[] DarkX = new float[1500];
-  public float[] DarkY = new float[1000];
-
-  public float angle = radians(0);
+  //variables for flashlight effect
+  //public float[] DarkX = new float[1500];
+  //public float[] DarkY = new float[1000];
+  //public float angle = radians(0);
 
   public void settings() {
     size(1500, 1000);
@@ -80,6 +82,8 @@ public class Sketch extends PApplet {
     U = loadImage("U.jpg");
 
     Bed = loadImage("Bed.jpg");
+    Flashlight = loadImage("Flashlight.png");
+    Outside = loadImage("Outside.jpg");
 
   }
 
@@ -115,9 +119,7 @@ public class Sketch extends PApplet {
         Activityopen = true;
         Background();
          
-        stroke(0);
-        fill(0, 0, 0, 210);
-        rect(0, 0, 1500, 1000);
+        DarkBackground();
         
         //print box
         printToy1();
@@ -156,10 +158,7 @@ public class Sketch extends PApplet {
         Activityopen = true; 
         Background();
          
-        stroke(0);
-        fill(0, 0, 0, 210);
-        rect(0, 0, 1500, 1000);
-
+        DarkBackground();
         //not done
         exit();
 
@@ -169,15 +168,18 @@ public class Sketch extends PApplet {
         
       } else if(scene == 5) {
         Activityopen = true;
-        //image(Outdoor, 0, 0);
+        
+        image(Outside, 0, 0);
+
+        DarkBackground();
+        Flashlight();
 
         exit();
+        
       } else if(scene == 6) {
         Activityopen = true;
 
-        stroke(0);
-        fill(0, 0, 0, 210);
-        rect(0, 0, 1500, 1000);
+        DarkBackground();
 
         exit();
       } else if(scene == 7) {
@@ -185,7 +187,22 @@ public class Sketch extends PApplet {
 
         image(Bed, 0, 0);
 
-        for (int i = 0; i < DarkY.length; i++){
+        stroke(0);
+        fill(0, 0, 0, 150);
+        rect(0, 0, 1500, 1000);
+
+        if (mouseX <= 144 || mouseX >= 379 || mouseY >= 583 || mouseY <= 348){
+          stroke(0);
+          fill(0);
+          rect(144, 348, 235, 235);
+        }
+
+        Flashlight();
+
+        
+      
+        //tried to make real flashlight effect
+        /*for (int i = 0; i < DarkY.length; i++){
           DarkY[i] = i;
         }
         for (int i = 0; i < DarkX.length; i++){
@@ -195,11 +212,14 @@ public class Sketch extends PApplet {
         for (int i = 0; i < DarkY.length; i++){
           for (int j = 0; j <DarkX.length; j++){
 
-            int inside = 0;
-            int notinside = 0;
+            //int inside = 0;
+            //int notinside = 0;
+
+
             while (inside != -1){
 
-              /* if (i >= mouseY + sin(angle) * 100 && i <= mouseY + 100 && j >= mouseX + cos(angle) * 100 && j <= mouseX + cos(PI/2 - angle)){
+              //flashlight effect in shape of circle
+               if (i >= mouseY + sin(angle) * 100 && i <= mouseY + 100 && j >= mouseX + cos(angle) * 100 && j <= mouseX + cos(PI/2 - angle)){
                 inside = -1;
               }
 
@@ -209,7 +229,7 @@ public class Sketch extends PApplet {
                 inside = -1;
                 notinside = -1;
                 
-              } */
+              } 
 
               if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
                 inside = -1;
@@ -220,17 +240,17 @@ public class Sketch extends PApplet {
 
             }
 
-            //if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
+            if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
               
-            //} else {
+            } else {
               if (notinside == -1){
               stroke(0, 0, 0, 255);
               stroke(0, 0, 0, 255);
               point(DarkX[j], DarkY[i]);
               }
-            //}
+            }
           }
-        }
+        }*/
 
 
 
@@ -254,6 +274,16 @@ public class Sketch extends PApplet {
     if (background == 3) {
       image(BackgroundOpenSafe, 0, 0);
     }
+  }
+
+  /*
+  * Prints a dark background
+  */
+  public void DarkBackground() {
+
+    stroke(0);
+    fill(0, 0, 0, 210);
+    rect(0, 0, 1500, 1000);
   }
 
   /*
@@ -285,7 +315,26 @@ public class Sketch extends PApplet {
       }
     }
   }
-  
+
+  /*
+  * checks if keycodes have been pressed for toybox 1 then changes the sides of the box accordingly 
+  */
+  public void Flashlight() {
+    float opacity = 40;
+    float size = 100;
+
+    for(int i = 0; i < 10; i++){
+        
+      stroke(255, 244, 29, opacity);
+      fill(255, 244, 29, opacity);
+      ellipse(mouseX, mouseY, size, size);
+      opacity = opacity - 10;
+      size = size + 20;
+    }
+
+    image(Flashlight, mouseX, mouseY);
+  }
+
   /*
   * checks if keycodes have been pressed for toybox 1 then changes the sides of the box accordingly 
   */

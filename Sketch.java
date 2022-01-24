@@ -6,9 +6,9 @@ public class Sketch extends PApplet {
   public float textX = 300;
   public float textY = 900;
   
-  PImage Bed;
-  PImage Flashlight;
-  PImage Outside;
+  PImage bed;
+  PImage flashlight;
+  PImage outside;
  
   PImage A;
   PImage E;
@@ -20,20 +20,20 @@ public class Sketch extends PApplet {
   PImage U;
   PImage I;
   
-  PImage Painting;
-  PImage BackgroundOpenSafe;
-  PImage BackgroundWithoutPicture;
+  PImage painting;
+  PImage backgroundOpenSafe;
+  PImage backgroundWithoutPicture;
 
-  PImage Zero;
-  PImage One;
-  PImage Two;
-  PImage Three;
-  PImage Four;
-  PImage Five;
-  PImage Six;
-  PImage Seven;
-  PImage Eight;
-  PImage Nine;
+  PImage zero;
+  PImage one;
+  PImage two;
+  PImage three;
+  PImage four;
+  PImage five;
+  PImage six;
+  PImage seven;
+  PImage eight;
+  PImage nine;
 
   public char[] toyBox1 = {'S', 'T', 'H', 'A', 'N', 'U'};
   public char[] toyBox2 = {'H', 'E', 'I', 'N', 'T', 'A'};
@@ -60,16 +60,18 @@ public class Sketch extends PApplet {
 
   public float scene = 1;
   public float background = 1;
-  public float PreviousScene = 1;
-  public float PaintingX = 1200;
-  public float PaintingY = 360;
+  public float previousScene = 1;
+  public float paintingX = 1200;
+  public float paintingY = 360;
   
   // to make sure the player does not guess the code. 
   public int steps;
 
-  public boolean Activityopen;
+  public boolean activityOpen;
 
   public String text;
+
+  public boolean paintingMoved;
  
 
   //variables for flashlight effect
@@ -77,10 +79,10 @@ public class Sketch extends PApplet {
   //public float[] DarkY = new float[1000];
   //public float angle = radians(0);
 
-  public boolean Starting = true;
-  public int StartingSeconds;
-  public int StartingMinutes;
-  public int StartingHours;
+  public boolean starting = true;
+  public int startingSeconds;
+  public int startingMinutes;
+  public int startingHours;
 
   public void settings() {
     size(1500, 1000);
@@ -89,9 +91,9 @@ public class Sketch extends PApplet {
 
   public void setup() {
 
-    Painting = loadImage("Painting.png");
-    BackgroundOpenSafe = loadImage("BackgroundOpenSafe.jpg");
-    BackgroundWithoutPicture = loadImage("BackgroundWithoutPicture.jpg");
+    painting = loadImage("Painting.png");
+    backgroundOpenSafe = loadImage("BackgroundOpenSafe.jpg");
+    backgroundWithoutPicture = loadImage("BackgroundWithoutPicture.jpg");
 
     A = loadImage("A.jpg");
     E = loadImage("E.jpg");
@@ -103,37 +105,37 @@ public class Sketch extends PApplet {
     T = loadImage("T.jpg");
     U = loadImage("U.jpg");
 
-    Bed = loadImage("Bed.jpg");
-    Flashlight = loadImage("Flashlight.png");
-    Outside = loadImage("Outside.jpg");
+    bed = loadImage("Bed.jpg");
+    flashlight = loadImage("Flashlight.png");
+    outside = loadImage("Outside.jpg");
 
-    Zero = loadImage("0.jpg");
-    One = loadImage("1.jpg");
-    Two = loadImage("2.jpg");
-    Three = loadImage("3.jpg");
-    Four = loadImage("4.jpg");
-    Five = loadImage("5.jpg");
-    Six = loadImage("6.jpg");
-    Seven = loadImage("7.jpg");
-    Eight = loadImage("8.jpg");
-    Nine = loadImage("9.jpg");
+    zero = loadImage("0.jpg");
+    one = loadImage("1.jpg");
+    two = loadImage("2.jpg");
+    three = loadImage("3.jpg");
+    four = loadImage("4.jpg");
+    five = loadImage("5.jpg");
+    six = loadImage("6.jpg");
+    seven = loadImage("7.jpg");
+    eight = loadImage("8.jpg");
+    nine = loadImage("9.jpg");
 
   }
 
   public void draw() {
-    int Seconds = second();
-    int Minutes = minute();
-    int Hours = hour();
+    int seconds = second();
+    int minutes = minute();
+    int hours = hour();
 
-    if (Starting == true){
-      StartingHours = Hours;
-      StartingMinutes = Minutes;
-      StartingSeconds = Seconds;
-      Starting = false;
+    if (starting == true){
+      startingHours = hours;
+      startingMinutes = minutes;
+      startingSeconds = seconds;
+      starting = false;
     }
 	  
     if (scene == 1) {
-      Background();
+      background();
       
       if (mousePressed){
 
@@ -177,10 +179,10 @@ public class Sketch extends PApplet {
       }
 
     } else if (scene == 2) {
-        Activityopen = true;
-        Background();
+        activityOpen = true;
+        background();
          
-        DarkBackground();
+        darkBackground();
         
         //print box
         printToy1();
@@ -222,10 +224,10 @@ public class Sketch extends PApplet {
         }
       } else if (scene == 3) {
 
-        Activityopen = true; 
-        Background();
+        activityOpen = true; 
+        background();
          
-        DarkBackground();
+        darkBackground();
         //image(page1, );
 
         steps++;
@@ -234,8 +236,8 @@ public class Sketch extends PApplet {
 
       } else if (scene == 4) {
 
-        Activityopen = true;
-        DarkBackground();
+        activityOpen = true;
+        darkBackground();
 
         steps++;
 
@@ -243,30 +245,30 @@ public class Sketch extends PApplet {
         
       } else if(scene == 5) {
 
-        Activityopen = true;
+        activityOpen = true;
         
-        image(Outside, 0, 0);
+        image(outside, 0, 0);
 
-        DarkBackground();
-        Flashlight();
+        darkBackground();
+        flashlight();
 
         exit();
         
       } else if(scene == 6) {
 
-        Activityopen = true;
+        activityOpen = true;
 
-        Door();
+        door();
 
-        DarkBackground();
+        darkBackground();
 
         exit();
 
       } else if(scene == 7) {
 
-        Activityopen = true;
+        activityOpen = true;
 
-        image(Bed, 0, 0);
+        image(bed, 0, 0);
 
         stroke(0);
         fill(0, 0, 0, 150);
@@ -279,7 +281,7 @@ public class Sketch extends PApplet {
         }
         steps++;
 
-        Flashlight();
+        flashlight();
 
         
       
@@ -339,7 +341,7 @@ public class Sketch extends PApplet {
         exit();
       } else if (scene == 8) {
 
-        textbox();
+        textBox();
 
         stroke(0);
         fill(0);
@@ -349,27 +351,28 @@ public class Sketch extends PApplet {
 
         if (mousePressed) {
           if (mouseX >= 1200 && mouseX <= 1300 && mouseY >= 800 && mouseY <= 900){
-            scene = PreviousScene;
+            scene = previousScene;
           }
         }
       } else if (scene == 9) {
 
-        Activityopen = true;
+        activityOpen = true;
 
-        DarkBackground();
+        darkBackground();
 
         exit();
       }
 
-    Timer();
+    timer();
 }
   public void mouseDragged() {
     
     if (scene == 1) {
       if (mouseX >= 1200 && mouseX <= 1400 && mouseY >= 360 && mouseY <= 490){
-        PaintingX = mouseX;
-        PaintingY = mouseY;
+        paintingX = mouseX;
+        paintingY = mouseY;
 
+        paintingMoved = true;
       }
     }
 
@@ -378,45 +381,46 @@ public class Sketch extends PApplet {
   /*
   * Computes and prints the amount of time played
   */
-  public void Timer() {
-    int Seconds = second();
-    int Minutes = minute();
-    int Hours = hour();
+  public void timer() {
+    int seconds = second();
+    int minutes = minute();
+    int hours = hour();
 
 
     stroke(255);
     fill(255);
     textSize(25);
 
-    text((Hours - StartingHours) + "/" + (Minutes - StartingMinutes) + "/" + (Seconds - StartingSeconds), 10, 10);
+    text((hours - startingHours) + "/" + (minutes - startingMinutes) + "/" + (seconds - startingSeconds), 25, 25);
     
   }
 
   /*
   * Prints the correct background based on how far into the game
   */
-  public void Background() {
+  public void background() {
 
-    if (PaintingX < 1200 || PaintingX > 1400 || PaintingY < 360 || PaintingY > 490) {
+    if (paintingX <= 1200 || paintingX >= 1400 || paintingY <= 360 || paintingY >= 490 && paintingMoved == true) {
       background = 2;
     }
 
     if (background == 1) {
 
-      image(BackgroundWithoutPicture, 0, 0);
-      image(Painting, PaintingX, PaintingY);
+      image(backgroundWithoutPicture, 0, 0);
+      image(painting, paintingX, paintingY);
 
     }
     if (background == 2) {
 
-      image(BackgroundWithoutPicture, 0, 0);
-      image(Painting, PaintingX, PaintingY);
+      image(backgroundWithoutPicture, 0, 0);
+      image(painting, paintingX, paintingY);
+      
 
     }
     if (background == 3) {
 
-      image(BackgroundOpenSafe, 0, 0);
-      image(Painting, PaintingX, PaintingY);
+      image(backgroundOpenSafe, 0, 0);
+      image(painting, paintingX, paintingY);
 
     }
   }
@@ -424,7 +428,7 @@ public class Sketch extends PApplet {
   /*
   * Prints a dark background
   */
-  public void DarkBackground() {
+  public void darkBackground() {
 
     stroke(0);
     fill(0, 0, 0, 210);
@@ -434,7 +438,7 @@ public class Sketch extends PApplet {
   /*
   * Prints a textbox
   */
-  public void textbox() {
+  public void textBox() {
     stroke(255);
     fill(88, 85, 90);
 
@@ -464,7 +468,7 @@ public class Sketch extends PApplet {
     if (mousePressed){
       if (mouseX >= 1350 && mouseX <= 1450 && mouseY >= 50 && mouseY <= 150){
         
-        Activityopen = false;
+        activityOpen = false;
         scene = 1;
 
       }
@@ -474,7 +478,7 @@ public class Sketch extends PApplet {
   /*
   * checks if keycodes have been pressed for toybox 1 then changes the sides of the box accordingly 
   */
-  public void Flashlight() {
+  public void flashlight() {
     float opacity = 40;
     float size = 100;
 
@@ -487,7 +491,7 @@ public class Sketch extends PApplet {
       size = size + 20;
     }
 
-    image(Flashlight, mouseX, mouseY);
+    image(flashlight, mouseX, mouseY);
   }
 
   /*
@@ -844,13 +848,13 @@ public class Sketch extends PApplet {
   /*
   * Checks what the player has inputed for the code and prints if correct or incorrect as well as if the code is too short
   */
-  public void Door() {
+  public void door() {
 
-    int NumberPosition = 0;
-    float NumberX = 420;
-    float NumberY = 250;
-    float[] NumberValue = new float [4];
-    float[] Code = {1,2,3,4};
+    int numberPosition = 0;
+    float numberX = 420;
+    float numberY = 250;
+    float[] numberValue = new float [4];
+    float[] code = {9, 4, 5, 7};
 
     stroke(255);
     fill(255);
@@ -859,32 +863,32 @@ public class Sketch extends PApplet {
     line(760, 250, 910, 250);
     line(930, 250, 1080, 250);
 
-    image(One, 525, 300);
-    image(Two, 675, 300);
-    image(Three, 825, 300);
-    image(Four, 525, 450);
-    image(Five, 675, 450);
-    image(Six, 825, 450);
-    image(Seven, 525, 600);
-    image(Eight, 675, 600);
-    image(Nine, 825, 600);
-    image(Zero, 675, 750);
+    image(one, 525, 300);
+    image(two, 675, 300);
+    image(three, 825, 300);
+    image(four, 525, 450);
+    image(five, 675, 450);
+    image(six, 825, 450);
+    image(seven, 525, 600);
+    image(eight, 675, 600);
+    image(nine, 825, 600);
+    image(zero, 675, 750);
 
-    if (NumberPosition == 0){
+    if (numberPosition == 0){
       
-      NumberX = 420;
+      numberX = 420;
 
-    } else if (NumberPosition == 1){
+    } else if (numberPosition == 1){
 
-      NumberX = 590;
+      numberX = 590;
 
-    } else if (NumberPosition == 2){
+    } else if (numberPosition == 2){
 
-      NumberX = 760;
+      numberX = 760;
 
-    } else if (NumberPosition == 3) {
+    } else if (numberPosition == 3) {
 
-      NumberX = 930;
+      numberX = 930;
 
     }
 
@@ -892,63 +896,63 @@ public class Sketch extends PApplet {
 
       if (key == '1'){
 
-        image(One, NumberX, NumberY);
-        NumberValue[NumberPosition] = 1;
-        NumberPosition++;
+        image(one, numberX, numberY);
+        numberValue[numberPosition] = 1;
+        numberPosition++;
 
       } else if (key == '2'){
 
-        image(Two, NumberX, NumberY);
-        NumberValue[NumberPosition] = 2;
-        NumberPosition++;
+        image(two, numberX, numberY);
+        numberValue[numberPosition] = 2;
+        numberPosition++;
 
       } else if (key == '3') {
 
-        image(Three, NumberX, NumberY);
-        NumberValue[NumberPosition] = 3;
-        NumberPosition++;
+        image(three, numberX, numberY);
+        numberValue[numberPosition] = 3;
+        numberPosition++;
 
       } else if (key == '4') {
 
-        image(Four, NumberX, NumberY);
-        NumberValue[NumberPosition] = 4;
-        NumberPosition++;
+        image(four, numberX, numberY);
+        numberValue[numberPosition] = 4;
+        numberPosition++;
 
       } else if (key == '5') {
 
-        image(Five, NumberX, NumberY);
-        NumberValue[NumberPosition] = 5;
-        NumberPosition++;
+        image(five, numberX, numberY);
+        numberValue[numberPosition] = 5;
+        numberPosition++;
 
       } else if (key =='6') {
 
-        image(Six, NumberX, NumberY);
-        NumberValue[NumberPosition] = 6;
-        NumberPosition++;
+        image(six, numberX, numberY);
+        numberValue[numberPosition] = 6;
+        numberPosition++;
 
       } else if (key == '7') {
 
-        image(Seven, NumberX, NumberY);
-        NumberValue[NumberPosition] = 7;
-        NumberPosition++;
+        image(seven, numberX, numberY);
+        numberValue[numberPosition] = 7;
+        numberPosition++;
 
       } else if (key == '8') {
 
-        image(Eight, NumberX, NumberY);
-        NumberValue[NumberPosition] = 8;
-        NumberPosition++;
+        image(eight, numberX, numberY);
+        numberValue[numberPosition] = 8;
+        numberPosition++;
 
       } else if (key == '9') {
 
-        image(Nine, NumberX, NumberY);
-        NumberValue[NumberPosition] = 9;
-        NumberPosition++;
+        image(nine, numberX, numberY);
+        numberValue[numberPosition] = 9;
+        numberPosition++;
 
       } else if (key == '0') {
 
-        image(Zero, NumberX, NumberY);
-        NumberValue[NumberPosition] = 0;
-        NumberPosition++;
+        image(zero, numberX, numberY);
+        numberValue[numberPosition] = 0;
+        numberPosition++;
 
       }
     }
@@ -956,6 +960,16 @@ public class Sketch extends PApplet {
     if (keyPressed) {
       if (key == ENTER || key == RETURN){
 
+        for (int i = 0; i < code.length; i++) {
+
+          if (code[i] == numberValue[i]) {
+
+          } else {
+            previousScene = scene;
+            scene = 8;
+            text = "Code is incorrect. Please try again";
+          }
+        }
 
       }
     }

@@ -3,9 +3,8 @@ import processing.core.PImage;
 
 public class Sketch extends PApplet {
 
-  //Note: 4 number in fill or stroke is opacity 
-  public float textX = 250;
-  public float textY = 350;
+  public float textX = 300;
+  public float textY = 900;
   
   PImage Bed;
   PImage Flashlight;
@@ -56,20 +55,32 @@ public class Sketch extends PApplet {
   scene 6 = door
   scene 7 = bed
   scene 8 = text
+  scene 9 = safe
   */
 
   public float scene = 1;
   public float background = 1;
+  public float PreviousScene = 1;
+  public float PaintingX = 1200;
+  public float PaintingY = 360;
   
   // to make sure the player does not guess the code. 
-  public float step;
+  public int steps;
 
   public boolean Activityopen;
+
+  public String text;
+ 
 
   //variables for flashlight effect
   //public float[] DarkX = new float[1500];
   //public float[] DarkY = new float[1000];
   //public float angle = radians(0);
+
+  public boolean Starting = true;
+  public int StartingSeconds;
+  public int StartingMinutes;
+  public int StartingHours;
 
   public void settings() {
     size(1500, 1000);
@@ -110,31 +121,59 @@ public class Sketch extends PApplet {
   }
 
   public void draw() {
+    int Seconds = second();
+    int Minutes = minute();
+    int Hours = hour();
+
+    if (Starting == true){
+      StartingHours = Hours;
+      StartingMinutes = Minutes;
+      StartingSeconds = Seconds;
+      Starting = false;
+    }
 	  
     if (scene == 1) {
       Background();
-
+      
       if (mousePressed){
 
         if (mouseX >= 206 && mouseX <= 366 && mouseY >= 690 && mouseY <= 840){
+
           scene = 2;
+
         }
         if (mouseX >= 180 && mouseX <= 354 && mouseY >= 890 && mouseY <= 970){
+
           scene = 3;
+
         }
         if (mouseX >= 100 && mouseX <= 328 && mouseY >= 135 && mouseY <= 596){
+
           scene = 5;
+
         } 
         if (mouseX >= 577 && mouseX <= 672 && mouseY >= 270 && mouseY <= 560){
+
           scene = 5;
+
         } 
         if (mouseX >= 920 && mouseX <= 1067 && mouseY >= 318 && mouseY <= 746){
-          scene = 6;
+
+          if (steps == 8) {
+            scene = 6;
+          } else {
+            scene = 8;
+            text = "This door seems to be locked. I wonder if there are any clues to what the code might be.";
+          }
         } 
         if (mouseX >= 1231 && mouseY >= 609){
+
           scene = 7;
         }
 
+        if (background == 2 && mouseX >= 1230 && mouseX <= 1340 && mouseY >= 380 && mouseY <= 485) {
+          scene = 9;
+        }
       }
 
     } else if (scene == 2) {
@@ -153,24 +192,28 @@ public class Sketch extends PApplet {
 
         //highlight box and calls method to change the side of said box
         if (mouseX >= 300 && mouseX <= 410 && mouseY >= 450 && mouseY <= 560){
+
           toyBox1();
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
           rect(300, 450, 110, 110);
           
         } else if (mouseX >= 550 && mouseX <= 660 && mouseY >= 450 && mouseY <= 560){
+
           toyBox2();
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
           rect(550, 450, 110, 110);
           
         } else if (mouseX >= 800 && mouseX <= 910 && mouseY >= 450 && mouseY <= 560){
+
           toyBox3();
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
           rect(800, 450, 110, 110);
           
         } else if (mouseX >= 1050 && mouseX <= 1200 && mouseY >= 450 && mouseY <=560){
+
           toyBox4();
           stroke(255, 255, 255, 50);
           fill(255, 255, 255, 50);
@@ -178,19 +221,28 @@ public class Sketch extends PApplet {
 
         }
       } else if (scene == 3) {
+
         Activityopen = true; 
         Background();
          
         DarkBackground();
-        //not done
+        //image(page1, );
+
+        steps++;
+
         exit();
 
       } else if (scene == 4) {
+
         Activityopen = true;
+        DarkBackground();
+
+        steps++;
 
         exit();
         
       } else if(scene == 5) {
+
         Activityopen = true;
         
         image(Outside, 0, 0);
@@ -201,6 +253,7 @@ public class Sketch extends PApplet {
         exit();
         
       } else if(scene == 6) {
+
         Activityopen = true;
 
         Door();
@@ -210,6 +263,7 @@ public class Sketch extends PApplet {
         exit();
 
       } else if(scene == 7) {
+
         Activityopen = true;
 
         image(Bed, 0, 0);
@@ -223,6 +277,7 @@ public class Sketch extends PApplet {
           fill(0);
           rect(144, 348, 235, 235);
         }
+        steps++;
 
         Flashlight();
 
@@ -282,24 +337,87 @@ public class Sketch extends PApplet {
 
 
         exit();
+      } else if (scene == 8) {
+
+        textbox();
+
+        stroke(0);
+        fill(0);
+        textSize(20);
+
+        text(text, textX, textY);
+
+        if (mousePressed) {
+          if (mouseX >= 1200 && mouseX <= 1300 && mouseY >= 800 && mouseY <= 900){
+            scene = PreviousScene;
+          }
+        }
+      } else if (scene == 9) {
+
+        Activityopen = true;
+
+        DarkBackground();
+
+        exit();
       }
 
+    Timer();
 }
+  public void mouseDragged() {
+    
+    if (scene == 1) {
+      if (mouseX >= 1200 && mouseX <= 1400 && mouseY >= 360 && mouseY <= 490){
+        PaintingX = mouseX;
+        PaintingY = mouseY;
+
+      }
+    }
+
+  }
+
+  /*
+  * Computes and prints the amount of time played
+  */
+  public void Timer() {
+    int Seconds = second();
+    int Minutes = minute();
+    int Hours = hour();
+
+
+    stroke(255);
+    fill(255);
+    textSize(25);
+
+    text((Hours - StartingHours) + "/" + (Minutes - StartingMinutes) + "/" + (Seconds - StartingSeconds), 10, 10);
+    
+  }
 
   /*
   * Prints the correct background based on how far into the game
   */
   public void Background() {
 
+    if (PaintingX < 1200 || PaintingX > 1400 || PaintingY < 360 || PaintingY > 490) {
+      background = 2;
+    }
+
     if (background == 1) {
+
       image(BackgroundWithoutPicture, 0, 0);
-      image(Painting, 0, 0);
+      image(Painting, PaintingX, PaintingY);
+
     }
     if (background == 2) {
+
       image(BackgroundWithoutPicture, 0, 0);
+      image(Painting, PaintingX, PaintingY);
+
     }
     if (background == 3) {
+
       image(BackgroundOpenSafe, 0, 0);
+      image(Painting, PaintingX, PaintingY);
+
     }
   }
 
@@ -320,7 +438,15 @@ public class Sketch extends PApplet {
     stroke(255);
     fill(88, 85, 90);
 
-    rect(200, 300, 1100, 400);
+    rect(200, 800, 1100, 200);
+
+    stroke(255);
+    fill(255, 0, 0);
+
+    ellipse(1250, 850, 50, 50);
+    
+    line(1240, 840, 1260, 860);
+    line(1260, 840, 1240, 860);
   }
 
   /*
@@ -337,8 +463,10 @@ public class Sketch extends PApplet {
 
     if (mousePressed){
       if (mouseX >= 1350 && mouseX <= 1450 && mouseY >= 50 && mouseY <= 150){
+        
         Activityopen = false;
         scene = 1;
+
       }
     }
   }
@@ -558,22 +686,35 @@ public class Sketch extends PApplet {
     float y = 450;
 
     if (toyBox1[0] == 'S'){
+
       image(S, x, y);
+
     }
     if (toyBox1[0] == 'T'){
+
       image(T, x, y);
+
     }
     if (toyBox1[0] == 'H'){
+
       image(H, x, y);
+
     }
     if (toyBox1[0] == 'A'){
+
       image(A, x, y);
+
     }
     if (toyBox1[0] == 'N'){
+
       image(N, x, y);
+      steps++;
+
     }
     if (toyBox1[0] == 'U'){
+
       image(U, x, y);
+
     }
 
   }
@@ -586,22 +727,35 @@ public class Sketch extends PApplet {
     float y = 450;
 
     if (toyBox2[0] == 'H'){
+
       image(H, x, y);
+
     }
     if (toyBox2[0] == 'E'){
+
       image(E, x, y);
+
     }
     if (toyBox2[0] == 'I'){
+
       image(I, x, y);
+      steps++;
+
     }
     if (toyBox2[0] == 'N'){
+
       image(N, x, y);
+
     }
     if (toyBox2[0] == 'T'){
+
       image(T, x, y);
+
     }
     if (toyBox2[0] == 'A'){
+
       image(A, x, y);
+
     }
 
   }
@@ -614,22 +768,35 @@ public class Sketch extends PApplet {
     float y = 450;
 
     if (toyBox3[0] == 'U'){
+
       image(U, x, y);
+
     }
     if (toyBox3[0] == 'I'){
+
       image(I, x, y);
+
     }
     if (toyBox3[0] == 'E'){
+
       image(E, x, y);
+
     }
     if (toyBox3[0] == 'N'){
+
       image(N, x, y);
+      steps++;
+
     }
     if (toyBox3[0] == 'S'){
+
       image(S, x, y);
+
     }
     if (toyBox3[0] == 'O'){
+
       image(O, x, y);
+
     }
 
   }
@@ -642,27 +809,55 @@ public class Sketch extends PApplet {
     float y = 450;
 
     if (toyBox4[0] == 'E'){
+
       image(E, x, y);
+      steps++;
+
     }
     if (toyBox4[0] == 'H'){
+
       image(H, x, y);
+
     }
     if (toyBox4[0] == 'T'){
+
       image(T, x, y);
+
     }
     if (toyBox4[0] == 'S'){
+
       image(S, x, y);
+
     }
     if (toyBox4[0] == 'N'){
+
       image(N, x, y);
+
     }
     if (toyBox4[0] == 'I'){
+
       image(I, x, y);
+
     }
 
   }
-
+  /*
+  * Checks what the player has inputed for the code and prints if correct or incorrect as well as if the code is too short
+  */
   public void Door() {
+
+    int NumberPosition = 0;
+    float NumberX = 420;
+    float NumberY = 250;
+    float[] NumberValue = new float [4];
+    float[] Code = {1,2,3,4};
+
+    stroke(255);
+    fill(255);
+    line(420, 250, 570, 250);
+    line(590, 250, 740, 250);
+    line(760, 250, 910, 250);
+    line(930, 250, 1080, 250);
 
     image(One, 525, 300);
     image(Two, 675, 300);
@@ -674,6 +869,96 @@ public class Sketch extends PApplet {
     image(Eight, 675, 600);
     image(Nine, 825, 600);
     image(Zero, 675, 750);
+
+    if (NumberPosition == 0){
+      
+      NumberX = 420;
+
+    } else if (NumberPosition == 1){
+
+      NumberX = 590;
+
+    } else if (NumberPosition == 2){
+
+      NumberX = 760;
+
+    } else if (NumberPosition == 3) {
+
+      NumberX = 930;
+
+    }
+
+    if (keyPressed) {
+
+      if (key == '1'){
+
+        image(One, NumberX, NumberY);
+        NumberValue[NumberPosition] = 1;
+        NumberPosition++;
+
+      } else if (key == '2'){
+
+        image(Two, NumberX, NumberY);
+        NumberValue[NumberPosition] = 2;
+        NumberPosition++;
+
+      } else if (key == '3') {
+
+        image(Three, NumberX, NumberY);
+        NumberValue[NumberPosition] = 3;
+        NumberPosition++;
+
+      } else if (key == '4') {
+
+        image(Four, NumberX, NumberY);
+        NumberValue[NumberPosition] = 4;
+        NumberPosition++;
+
+      } else if (key == '5') {
+
+        image(Five, NumberX, NumberY);
+        NumberValue[NumberPosition] = 5;
+        NumberPosition++;
+
+      } else if (key =='6') {
+
+        image(Six, NumberX, NumberY);
+        NumberValue[NumberPosition] = 6;
+        NumberPosition++;
+
+      } else if (key == '7') {
+
+        image(Seven, NumberX, NumberY);
+        NumberValue[NumberPosition] = 7;
+        NumberPosition++;
+
+      } else if (key == '8') {
+
+        image(Eight, NumberX, NumberY);
+        NumberValue[NumberPosition] = 8;
+        NumberPosition++;
+
+      } else if (key == '9') {
+
+        image(Nine, NumberX, NumberY);
+        NumberValue[NumberPosition] = 9;
+        NumberPosition++;
+
+      } else if (key == '0') {
+
+        image(Zero, NumberX, NumberY);
+        NumberValue[NumberPosition] = 0;
+        NumberPosition++;
+
+      }
+    }
+
+    if (keyPressed) {
+      if (key == ENTER || key == RETURN){
+
+
+      }
+    }
 
 
   }

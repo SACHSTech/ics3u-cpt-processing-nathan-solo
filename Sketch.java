@@ -72,17 +72,17 @@ public class Sketch extends PApplet {
   public String text;
 
   public boolean paintingMoved;
- 
 
-  //variables for flashlight effect
-  //public float[] DarkX = new float[1500];
-  //public float[] DarkY = new float[1000];
-  //public float angle = radians(0);
+  public boolean safeUnlocked = false;
 
   public boolean starting = true;
   public int startingSeconds;
   public int startingMinutes;
   public int startingHours;
+
+  public float [] safeX = {900, 600, 600, 750};
+  public float [] safeY = {525, 675, 525, 375};
+  public int circleSelected;
 
   public void settings() {
     size(1500, 1000);
@@ -282,63 +282,8 @@ public class Sketch extends PApplet {
         steps++;
 
         flashlight();
-
-        
-      
-        //tried to make real flashlight effect
-        /*for (int i = 0; i < DarkY.length; i++){
-          DarkY[i] = i;
-        }
-        for (int i = 0; i < DarkX.length; i++){
-          DarkX[i] = i;
-        }
-
-        for (int i = 0; i < DarkY.length; i++){
-          for (int j = 0; j <DarkX.length; j++){
-
-            //int inside = 0;
-            //int notinside = 0;
-
-
-            while (inside != -1){
-
-              //flashlight effect in shape of circle
-               if (i >= mouseY + sin(angle) * 100 && i <= mouseY + 100 && j >= mouseX + cos(angle) * 100 && j <= mouseX + cos(PI/2 - angle)){
-                inside = -1;
-              }
-
-              angle = angle + radians(1);
-
-              if (angle >= 2 * PI) {
-                inside = -1;
-                notinside = -1;
-                
-              } 
-
-              if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
-                inside = -1;
-                } else {
-                  inside = -1;
-                  notinside = -1;
-                }
-
-            }
-
-            if (i >= mouseY - 100 && i <= mouseY + 100 && j >= mouseX - 100 && j <= mouseX + 100){
-              
-            } else {
-              if (notinside == -1){
-              stroke(0, 0, 0, 255);
-              stroke(0, 0, 0, 255);
-              point(DarkX[j], DarkY[i]);
-              }
-            }
-          }
-        }*/
-
-
-
         exit();
+
       } else if (scene == 8) {
 
         textBox();
@@ -355,11 +300,28 @@ public class Sketch extends PApplet {
           }
         }
       } else if (scene == 9) {
-
         activityOpen = true;
 
         darkBackground();
 
+        if (safeUnlocked == false) {
+          safeDraw(); 
+
+          for (int i = 0; i < 4; i++) {
+
+            if (mouseX >= safeX[i] - 75 && mouseX <= safeX[i] + 75 && mouseY >= safeY[i] - 75 && mouseY <= safeY[i] + 75) {
+              
+              stroke(255, 255, 255, 100);
+              fill(255, 255, 255, 100);
+              ellipse(safeX[i] , safeY[i] , 75, 75);
+              circleSelected = i;
+              safe();
+            }
+          }
+        } else {
+
+          //image(insideSafe, );
+        }
         exit();
       }
 
@@ -375,7 +337,6 @@ public class Sketch extends PApplet {
         paintingMoved = true;
       }
     }
-
   }
 
   /*
@@ -402,6 +363,10 @@ public class Sketch extends PApplet {
 
     if (paintingX <= 1200 || paintingX >= 1400 || paintingY <= 360 || paintingY >= 490 && paintingMoved == true) {
       background = 2;
+    }
+
+    if (safeUnlocked == true) {
+      background = 3;
     }
 
     if (background == 1) {
@@ -978,8 +943,8 @@ public class Sketch extends PApplet {
 
         stroke(255);
         fill(255);
-
-        text("Congradulations! ")
+        textSize(100);
+        text = "Congradulations! Thank you for playing Escape Room and I hope you had a great time. Special thanks to Nathan Wan(myself), Mr. Fabroa, and my cousins. New levels will be added soon!";
 
       }
     }
@@ -987,5 +952,139 @@ public class Sketch extends PApplet {
 
   }
 
+  public void safe() {
+    
+    boolean leftBarrier = false;
+    boolean rightBarrier = false;
+    boolean upBarrier = false;
+    boolean downBarrier = false;
+
+        if (safeX[circleSelected] - 150 < 525) {
+          leftBarrier = true;
+        } 
+        if (safeX[circleSelected] + 150 > 975) {
+          rightBarrier = true;
+        } 
+        if (safeY[circleSelected] - 150 < 300) {
+          upBarrier = true;
+        }
+        if (safeY[circleSelected] + 150 > 750) {
+          downBarrier = true;
+        }
+
+        /*for (int j = 0; j < 4; j++) {
+          
+          if (safeX[circleSelected] - 150 == safeX[j]) {
+            leftBarrier = true;
+          } 
+          if (safeX[circleSelected] + 150 == safeX[j]) {
+            rightBarrier = true;
+          } 
+          if (safeY[circleSelected] - 150 == safeY[j]) {
+            upBarrier = true;
+          }
+          if (safeY[circleSelected] + 150 == safeY[j]) {
+            downBarrier = true;
+          } 
+    }*/
+
+    System.out.println(upBarrier);
+    System.out.println(leftBarrier);
+    System.out.println(rightBarrier);
+    System.out.println(downBarrier);
+
+    if (keyPressed) {
+      if (keyCode == UP && upBarrier == false){
+        
+        safeY[circleSelected] = safeY[circleSelected] - 150;
+        System.out.println("hello");
+
+      } else if (keyCode == DOWN && downBarrier == false) {
+    
+        safeY[circleSelected] = safeY[circleSelected] + 150;
+      
+      } else if (keyCode == LEFT && leftBarrier == false) {
+
+        safeX[circleSelected] = safeX[circleSelected] - 150;
+
+      } else if (keyCode == RIGHT && rightBarrier == false) {
+
+        safeX[circleSelected] = safeX[circleSelected] + 150;
+
+      }
+    }
+  }
+
+  public void safeDraw() {
+
+    stroke(255, 0, 0);
+    fill(255, 0, 0);
+
+    line(525, 300, 525, 450);
+    line(525, 300, 675, 300);
+
+    stroke(255);
+    fill(255);
+
+    line(675, 300, 825, 300);
+    line(675, 300, 675, 450);
+    line(675 ,450, 525, 450);
+    line(525, 450, 525, 600);
+    line(525, 600, 675, 600);
+    line(675, 600, 675, 450);
+    line(675, 450, 825, 450);
+    line(825, 450, 825, 300);
+    line(825, 450, 975, 450);
+    line(975, 450, 975, 600);
+    line(975, 600, 825, 600);
+    line(825, 600, 825, 450);
+    line(825, 600, 675, 600);
+    line(675, 600, 675, 750);
+    line(675, 750, 825, 750);
+    line(825, 750, 825, 600);
+    
+    stroke(250, 229, 6);
+    fill(250, 229, 6);
+
+    line(825, 300, 975, 300);
+    line(975, 300, 975, 450);
+
+    stroke(0, 0, 255);
+    fill(0, 0, 255);
+
+    line(975, 600, 975, 750);
+    line(975, 750, 825, 750);
+
+    stroke(0, 255, 0);
+    fill(0, 255, 0);
+
+    line(525, 600, 525, 750);
+    line(525, 750, 675, 750);
+
+    stroke(255, 0, 0);
+    fill(255, 0, 0);
+    ellipse(safeX[0], safeY[0], 75, 75);
+
+    stroke(250, 229, 6);
+    fill(250, 229, 6);
+    ellipse(safeX[1], safeY[1], 75, 75);
+
+    stroke(0, 0, 255);
+    fill(0, 0, 255);
+    ellipse(safeX[2], safeY[2], 75, 75);
+
+    stroke(0, 255, 0);
+    fill(0, 255, 0);
+    ellipse(safeX[3], safeY[3], 75, 75);
+
+    if (safeX[0] == 600 && safeX[1] == 900 && safeX[2] == 900 && safeX[3] == 600 && safeY[0] == 375 && safeY[1] == 375 && safeY[2] == 675 && safeY[3] == 675) {
+
+      safeUnlocked = true;
+      previousScene = 1;
+      scene = 8;
+      text = "The safe is unlocked!";
+   
+    }
+  }
 
 }

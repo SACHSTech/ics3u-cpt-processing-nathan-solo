@@ -967,9 +967,19 @@ public class Sketch extends PApplet {
           } else {
             previousScene = scene;
             scene = 8;
-            text = "Code is incorrect. Please try again";
+            text = "Code is incorrect. Please try again.";
           }
         }
+
+        stroke(0);
+        fill(0);
+
+        rect(0, 0, 1500, 1000);
+
+        stroke(255);
+        fill(255);
+
+        text("Congradulations! ")
 
       }
     }

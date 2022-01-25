@@ -35,6 +35,8 @@ public class Sketch extends PApplet {
   PImage eight;
   PImage nine;
 
+  PImage openSafe;
+
   public char[] toyBox1 = {'S', 'T', 'H', 'A', 'N', 'U'};
   public char[] toyBox2 = {'H', 'E', 'I', 'N', 'T', 'A'};
   public char[] toyBox3 = {'U', 'I', 'E', 'N', 'S', 'O'};
@@ -119,6 +121,8 @@ public class Sketch extends PApplet {
     seven = loadImage("7.jpg");
     eight = loadImage("8.jpg");
     nine = loadImage("9.jpg");
+
+    openSafe = loadImage("openSafe.png");
 
   }
 
@@ -320,7 +324,14 @@ public class Sketch extends PApplet {
           }
         } else {
 
-          //image(insideSafe, );
+          image(openSafe, 250, 0);
+
+          if (mousePressed) {
+            if (mouseX >= 237 && mouseX <= 583 && mouseY >= 390 && mouseY <= 834) {
+              scene = 4;
+              steps++;
+            }
+          }
         }
         exit();
       }

@@ -37,6 +37,9 @@ public class Sketch extends PApplet {
 
   PImage openSafe;
 
+  PImage page1;
+  PImage page2;
+
   public char[] toyBox1 = {'S', 'T', 'H', 'A', 'N', 'U'};
   public char[] toyBox2 = {'H', 'E', 'I', 'N', 'T', 'A'};
   public char[] toyBox3 = {'U', 'I', 'E', 'N', 'S', 'O'};
@@ -124,6 +127,9 @@ public class Sketch extends PApplet {
 
     openSafe = loadImage("openSafe.png");
 
+    page1 = loadImage("Pages1.png");
+    page2 = loadImage("Page")
+
   }
 
   public void draw() {
@@ -177,7 +183,7 @@ public class Sketch extends PApplet {
           scene = 7;
         }
 
-        if (background == 2 && mouseX >= 1230 && mouseX <= 1340 && mouseY >= 380 && mouseY <= 485) {
+        if (background == 2 || background == 3 && mouseX >= 1230 && mouseX <= 1340 && mouseY >= 380 && mouseY <= 485) {
           scene = 9;
         }
       }
@@ -326,10 +332,11 @@ public class Sketch extends PApplet {
 
           image(openSafe, 250, 0);
 
+          steps++;
+
           if (mousePressed) {
             if (mouseX >= 237 && mouseX <= 583 && mouseY >= 390 && mouseY <= 834) {
               scene = 4;
-              steps++;
             }
           }
         }
@@ -963,6 +970,9 @@ public class Sketch extends PApplet {
 
   }
 
+  /*
+  * Checks if there is a barrier in what direction of the selected circle then computes what will happen if key arrows are pressed
+  */
   public void safe() {
     
     boolean leftBarrier = false;
@@ -970,45 +980,39 @@ public class Sketch extends PApplet {
     boolean upBarrier = false;
     boolean downBarrier = false;
 
-        if (safeX[circleSelected] - 150 < 525) {
-          leftBarrier = true;
-        } 
-        if (safeX[circleSelected] + 150 > 975) {
-          rightBarrier = true;
-        } 
-        if (safeY[circleSelected] - 150 < 300) {
-          upBarrier = true;
-        }
-        if (safeY[circleSelected] + 150 > 750) {
-          downBarrier = true;
-        }
+    if (safeX[circleSelected] - 150 < 525) {
+      leftBarrier = true;
+    } 
+    if (safeX[circleSelected] + 150 > 975) {
+      rightBarrier = true;
+    } 
+    if (safeY[circleSelected] - 150 < 300) {
+      upBarrier = true;
+    }
+    if (safeY[circleSelected] + 150 > 750) {
+      downBarrier = true;
+    }
 
-        /*for (int j = 0; j < 4; j++) {
+    for (int j = 0; j < 4; j++) {
           
-          if (safeX[circleSelected] - 150 == safeX[j]) {
-            leftBarrier = true;
-          } 
-          if (safeX[circleSelected] + 150 == safeX[j]) {
-            rightBarrier = true;
-          } 
-          if (safeY[circleSelected] - 150 == safeY[j]) {
-            upBarrier = true;
-          }
-          if (safeY[circleSelected] + 150 == safeY[j]) {
-            downBarrier = true;
-          } 
-    }*/
-
-    System.out.println(upBarrier);
-    System.out.println(leftBarrier);
-    System.out.println(rightBarrier);
-    System.out.println(downBarrier);
+      if (safeX[circleSelected] - 150 == safeX[j] && safeY[circleSelected] == safeY[j]) {
+        leftBarrier = true;
+      } 
+      if (safeX[circleSelected] + 150 == safeX[j] && safeY[circleSelected] == safeY[j]) {
+        rightBarrier = true;
+      } 
+      if (safeY[circleSelected] - 150 == safeY[j] && safeX[circleSelected] == safeX[j]) {
+        upBarrier = true;
+      }
+      if (safeY[circleSelected] + 150 == safeY[j] && safeX[circleSelected] == safeX[j]) {
+        downBarrier = true;
+      } 
+    }
 
     if (keyPressed) {
       if (keyCode == UP && upBarrier == false){
         
         safeY[circleSelected] = safeY[circleSelected] - 150;
-        System.out.println("hello");
 
       } else if (keyCode == DOWN && downBarrier == false) {
     
@@ -1026,6 +1030,9 @@ public class Sketch extends PApplet {
     }
   }
 
+  /*
+  * Prints out the grid and the circles. It also checks if safe is unlocked
+  */
   public void safeDraw() {
 
     stroke(255, 0, 0);

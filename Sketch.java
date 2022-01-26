@@ -93,6 +93,10 @@ public class Sketch extends PApplet {
   public int hints;
   public int howToPlay;
 
+  public int numberPosition = 0;
+
+  public float[] numberValue = {-1, -1, -1, -1};
+
   public void settings() {
     size(1500, 1000);
   }
@@ -134,11 +138,10 @@ public class Sketch extends PApplet {
     page1 = loadImage("Pages1.png");
     page2 = loadImage("Pages2.png");
 
-    timer = millis();
-
   }
 
   public void draw() {
+    timer = millis();
 	  
     if (scene == 1) {
       background();
@@ -276,9 +279,10 @@ public class Sketch extends PApplet {
 
         activityOpen = true;
 
-        door();
-
         darkBackground();
+
+        printDoor();
+        door();
 
         howToPlay();
         exit();
@@ -397,16 +401,6 @@ public class Sketch extends PApplet {
 
     time = (int) timer / 1000;
     
-    /*if (millis() > timer + timerIncrease) {
-      timer = millis();
-    }
-
-    stroke(255);
-    fill(255);
-    textSize(25);
-
-    text((timer / 3600000) + "/" + (timer / 60000) + "/" + (timer / 1000), 25, 35);*/
-
     stroke(255);
     fill(255);
     textSize(25);
@@ -415,6 +409,9 @@ public class Sketch extends PApplet {
     
   }
 
+  /*
+  * Creates help button and directs user to the help scene 
+  */
 
   public void help() {
 
@@ -436,6 +433,9 @@ public class Sketch extends PApplet {
     }
   }
 
+  /*
+  * Creates howToPlay buttom and tells the user how to play where applicable 
+  */
   public void howToPlay() {
 
     stroke(255);
@@ -504,6 +504,9 @@ public class Sketch extends PApplet {
     }
   }
   
+  /*
+  * Create hint button and based on the scene, gives a hint
+  */
   public void hint() {
 
     stroke(255);
@@ -1042,15 +1045,94 @@ public class Sketch extends PApplet {
     }
 
   }
+  
+  /*
+  * Prints imputted code
+  */
+  public void printDoor() {
+
+    float numberX = 420;
+    float numberY = 100;
+
+    for (int i = 0; i < numberValue.length; i++) {
+
+      if (i == 0){
+      
+        numberX = 420;
+  
+      } else if (i == 1){
+  
+        numberX = 590;
+  
+      } else if (i == 2){
+  
+        numberX = 760;
+  
+      } else if (i == 3) {
+  
+        numberX = 930;
+  
+      }
+  
+      if (numberValue[i] == -1) {
+        
+        stroke(0);
+        fill(0);
+  
+        rect(numberX, numberY, 150, 150);
+      
+      } else if (numberValue[i] == 0) {
+
+        image(zero, numberX, numberY);
+        
+      } else if (numberValue[i] == 1) {
+
+        image(one, numberX, numberY);
+
+      } else if (numberValue[i] == 2) {
+
+        image(two, numberX, numberY);
+
+      } else if (numberValue[i] == 3) {
+
+        image(three, numberX, numberY);
+        
+      } else if (numberValue[i] == 4) {
+
+        image(four, numberX, numberY);
+        
+      } else if (numberValue[i] == 5) {
+
+        image(five, numberX, numberY);
+        
+      } else if (numberValue[i] == 6) {
+
+        image(six, numberX, numberY);
+        
+      } else if (numberValue[i] == 7) {
+
+        image(seven, numberX, numberY);
+        
+      } else if (numberValue[i] == 8) {
+
+        image(eight, numberX, numberY);
+        
+      } else if (numberValue[i] == 9) {
+
+        image(nine, numberX, numberY);
+        
+      } 
+    }
+
+  }
+  
   /*
   * Checks what the player has inputed for the code and prints if correct or incorrect as well as if the code is too short
   */
   public void door() {
 
-    int numberPosition = 0;
     float numberX = 420;
-    float numberY = 250;
-    float[] numberValue = new float [4];
+    float numberY = 100;
     float[] code = {9, 4, 5, 7};
 
     stroke(255);
@@ -1091,66 +1173,73 @@ public class Sketch extends PApplet {
 
     if (keyPressed) {
 
-      if (key == 1){
+      if (key == '1'){
 
         image(one, numberX, numberY);
         numberValue[numberPosition] = 1;
         numberPosition++;
 
-      } else if (key == 2){
+      } else if (key == '2'){
 
         image(two, numberX, numberY);
         numberValue[numberPosition] = 2;
         numberPosition++;
 
-      } else if (key == 3) {
+      } else if (key == '3') {
 
         image(three, numberX, numberY);
         numberValue[numberPosition] = 3;
         numberPosition++;
 
-      } else if (key == 4) {
+      } else if (key == '4') {
 
         image(four, numberX, numberY);
         numberValue[numberPosition] = 4;
         numberPosition++;
 
-      } else if (key == 5) {
+      } else if (key == '5') {
 
         image(five, numberX, numberY);
         numberValue[numberPosition] = 5;
         numberPosition++;
 
-      } else if (key ==6) {
+      } else if (key == '6') {
 
         image(six, numberX, numberY);
         numberValue[numberPosition] = 6;
         numberPosition++;
 
-      } else if (key == 7) {
+      } else if (key == '7') {
 
         image(seven, numberX, numberY);
         numberValue[numberPosition] = 7;
         numberPosition++;
 
-      } else if (key == 8) {
+      } else if (key == '8') {
 
         image(eight, numberX, numberY);
         numberValue[numberPosition] = 8;
         numberPosition++;
 
-      } else if (key == 9) {
+      } else if (key == '9') {
 
         image(nine, numberX, numberY);
         numberValue[numberPosition] = 9;
         numberPosition++;
 
-      } else if (key == 0) {
+      } else if (key == '0') {
 
         image(zero, numberX, numberY);
         numberValue[numberPosition] = 0;
         numberPosition++;
 
+      }
+
+      if (key == DELETE || key == BACKSPACE) {
+
+        numberPosition--;
+        numberValue[numberPosition] = -1;
+        rect(numberX, numberY, 150, 150);
       }
     }
 
@@ -1161,7 +1250,7 @@ public class Sketch extends PApplet {
 
           if (code[i] != numberValue[i]) {
 
-            previousScene = scene;
+            previousScene = 6;
             scene = 8;
             text = "Code is incorrect. Please try again.";
             correct = false; 
@@ -1171,10 +1260,12 @@ public class Sketch extends PApplet {
           }
         }
 
-        // Wipes code
+      // Wipes code
+      if (correct == false) {
         for (int j = 0; j < numberValue.length; j++) {
           numberValue[j] = 0;
         }
+      } 
       }  
     }
 

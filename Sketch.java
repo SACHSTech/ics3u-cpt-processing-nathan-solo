@@ -70,7 +70,7 @@ public class Sketch extends PApplet {
   public float paintingY = 360;
   
   // to make sure the player does not guess the code. 
-  public int steps;
+  public int[] steps = new int [8];
 
   public boolean activityOpen;
 
@@ -88,6 +88,9 @@ public class Sketch extends PApplet {
   public float [] safeX = {900, 600, 600, 750};
   public float [] safeY = {525, 675, 525, 375};
   public int circleSelected;
+
+  public boolean doorLock = false;
+  public boolean correct = true;
 
   public void settings() {
     size(1500, 1000);
@@ -128,11 +131,12 @@ public class Sketch extends PApplet {
     openSafe = loadImage("openSafe.png");
 
     page1 = loadImage("Pages1.png");
-    page2 = loadImage("Page")
+    page2 = loadImage("Pages2.png");
 
   }
 
   public void draw() {
+
     int seconds = second();
     int minutes = minute();
     int hours = hour();
@@ -171,11 +175,17 @@ public class Sketch extends PApplet {
         } 
         if (mouseX >= 920 && mouseX <= 1067 && mouseY >= 318 && mouseY <= 746){
 
-          if (steps == 8) {
+          
+          for (int i = 0; i < steps.length; i++) {
+            if (steps[i] == 1) {
+            } else {
+              scene = 8;
+              text = "This door seems to be locked. I wonder if there are any clues to what the code might be.";
+              doorLock = true;
+            }
+          }
+          if (doorLock == false) {
             scene = 6;
-          } else {
-            scene = 8;
-            text = "This door seems to be locked. I wonder if there are any clues to what the code might be.";
           }
         } 
         if (mouseX >= 1231 && mouseY >= 609){
@@ -183,7 +193,9 @@ public class Sketch extends PApplet {
           scene = 7;
         }
 
-        if (background == 2 || background == 3 && mouseX >= 1230 && mouseX <= 1340 && mouseY >= 380 && mouseY <= 485) {
+        if (background == 2 && mouseX >= 1230 && mouseX <= 1340 && mouseY >= 380 && mouseY <= 485) {
+          scene = 9;
+        } else if (background == 3 && mouseX >= 1230 && mouseX <= 1340 && mouseY >= 380 && mouseY <= 485) {
           scene = 9;
         }
       }
@@ -236,11 +248,10 @@ public class Sketch extends PApplet {
 
         activityOpen = true; 
         background();
-         
         darkBackground();
-        //image(page1, );
+        image(page1, 250, 0);
 
-        steps++;
+        steps[4] = 1;
 
         exit();
 
@@ -248,8 +259,9 @@ public class Sketch extends PApplet {
 
         activityOpen = true;
         darkBackground();
+        image(page2, 250, 0);
 
-        steps++;
+        steps[7] = 1;
 
         exit();
         
@@ -274,6 +286,10 @@ public class Sketch extends PApplet {
 
         exit();
 
+        if (correct == true) {
+          endScreen();
+        }
+
       } else if(scene == 7) {
 
         activityOpen = true;
@@ -289,7 +305,7 @@ public class Sketch extends PApplet {
           fill(0);
           rect(144, 348, 235, 235);
         }
-        steps++;
+        steps[5] = 1;
 
         flashlight();
         exit();
@@ -332,10 +348,10 @@ public class Sketch extends PApplet {
 
           image(openSafe, 250, 0);
 
-          steps++;
+          steps[6] = 1;
 
           if (mousePressed) {
-            if (mouseX >= 237 && mouseX <= 583 && mouseY >= 390 && mouseY <= 834) {
+            if (mouseX >= 237 && mouseX <= 833 && mouseY >= 390 && mouseY <= 834) {
               scene = 4;
             }
           }
@@ -344,6 +360,9 @@ public class Sketch extends PApplet {
       }
 
     timer();
+    help();
+    howToPlay();
+    hint();
 }
   public void mouseDragged() {
     
@@ -370,8 +389,65 @@ public class Sketch extends PApplet {
     fill(255);
     textSize(25);
 
-    text((hours - startingHours) + "/" + (minutes - startingMinutes) + "/" + (seconds - startingSeconds), 25, 25);
+    text((hours - startingHours) + "/" + (minutes - startingMinutes) + "/" + (seconds - startingSeconds), 25, 35);
     
+  }
+
+
+  public void help() {
+
+  }
+
+  public void howToPlay() {
+
+    stroke(255);
+    fill(0);
+    ellipse(150, 25, 50, 50);
+
+    stroke(255);
+    fill(255);
+    textSize(50);
+
+    text("!", 142, 42);
+
+    if (mousePressed) {
+      if (mouseX >= 100 && mouseX <= 200 && mouseY >= 0 && mouseY <= 75) {
+
+        if (scene == 1) {
+          previousScene = 1;
+          scene = 8;
+          text = "Interact with objects by clicking and dragging them.";
+        } else if (scene == 2) {
+          previousScene = 2;
+          scene = 8;
+          text = "Move the mouse to the box and use the arrow keys to change the face of the box.";
+        } else if (scene == 5) {
+          previousScene = 5;
+          scene = 8;
+          text = "Move the mouse to move the flashlight";
+        } else if (scene == 6) {
+          previousScene = 6;
+          scene = 8;
+          text = "Use the number keys to enter code.";
+        } else if (scene == 7) {
+          previousScene = 7;
+          scene = 8;
+          text = "Move the mouse to move the flashlight";
+        } else if (scene == 9 && safeUnlocked == false) {
+          previousScene = 9;
+          scene = 8;
+          text = "Move the mouse to a circle and use the arrow keys to change the position.";
+        } else if (scene == 9 && safeUnlocked == true) {
+          previousScene = 9;
+          scene = 8;
+          text = "Interact with objects by clicking on them.";
+        }
+      }
+    }
+  }
+  
+  public void hint() {
+
   }
 
   /*
@@ -695,7 +771,7 @@ public class Sketch extends PApplet {
     if (toyBox1[0] == 'N'){
 
       image(N, x, y);
-      steps++;
+      steps[0] = 1;
 
     }
     if (toyBox1[0] == 'U'){
@@ -726,7 +802,7 @@ public class Sketch extends PApplet {
     if (toyBox2[0] == 'I'){
 
       image(I, x, y);
-      steps++;
+      steps[1] = 1;
 
     }
     if (toyBox2[0] == 'N'){
@@ -772,7 +848,7 @@ public class Sketch extends PApplet {
     if (toyBox3[0] == 'N'){
 
       image(N, x, y);
-      steps++;
+      steps[2] = 1;
 
     }
     if (toyBox3[0] == 'S'){
@@ -798,7 +874,7 @@ public class Sketch extends PApplet {
     if (toyBox4[0] == 'E'){
 
       image(E, x, y);
-      steps++;
+      steps[3] = 1;
 
     }
     if (toyBox4[0] == 'H'){
@@ -838,6 +914,8 @@ public class Sketch extends PApplet {
     float numberY = 250;
     float[] numberValue = new float [4];
     float[] code = {9, 4, 5, 7};
+
+    correct = true;
 
     stroke(255);
     fill(255);
@@ -951,19 +1029,9 @@ public class Sketch extends PApplet {
             previousScene = scene;
             scene = 8;
             text = "Code is incorrect. Please try again.";
+            correct = false;
           }
         }
-
-        stroke(0);
-        fill(0);
-
-        rect(0, 0, 1500, 1000);
-
-        stroke(255);
-        fill(255);
-        textSize(100);
-        text = "Congradulations! Thank you for playing Escape Room and I hope you had a great time. Special thanks to Nathan Wan(myself), Mr. Fabroa, and my cousins. New levels will be added soon!";
-
       }
     }
 
@@ -1103,6 +1171,22 @@ public class Sketch extends PApplet {
       text = "The safe is unlocked!";
    
     }
+  }
+
+  public void endScreen() {
+
+      stroke(255);
+      fill(88, 85, 90);
+
+      rect(0, 0, 1500, 1000);
+
+      stroke(255);
+      fill(255);
+      textSize(30);
+      text("Congradulations! Thank you for playing Escape Room and I hope you had a great time.", 125, 400);
+      text("Special thanks to Nathan Wan(myself), Mr. Fabroa, and my cousins.", 280, 500);
+      text("New levels will be added soon!", 510, 600);
+    
   }
 
 }

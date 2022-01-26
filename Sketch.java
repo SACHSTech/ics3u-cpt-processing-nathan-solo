@@ -80,17 +80,18 @@ public class Sketch extends PApplet {
 
   public boolean safeUnlocked = false;
 
-  public boolean starting = true;
-  public int startingSeconds;
-  public int startingMinutes;
-  public int startingHours;
+  public float timer;
+  public float timerIncrease = 1000;
 
   public float [] safeX = {900, 600, 600, 750};
   public float [] safeY = {525, 675, 525, 375};
   public int circleSelected;
 
   public boolean doorLock = false;
-  public boolean correct = true;
+  public boolean correct;
+
+  public int hints;
+  public int howToPlay;
 
   public void settings() {
     size(1500, 1000);
@@ -133,24 +134,17 @@ public class Sketch extends PApplet {
     page1 = loadImage("Pages1.png");
     page2 = loadImage("Pages2.png");
 
+    timer = millis();
+
   }
 
   public void draw() {
-
-    int seconds = second();
-    int minutes = minute();
-    int hours = hour();
-
-    if (starting == true){
-      startingHours = hours;
-      startingMinutes = minutes;
-      startingSeconds = seconds;
-      starting = false;
-    }
 	  
     if (scene == 1) {
       background();
+      howToPlay();
       
+      timer();
       if (mousePressed){
 
         if (mouseX >= 206 && mouseX <= 366 && mouseY >= 690 && mouseY <= 840){
@@ -174,7 +168,7 @@ public class Sketch extends PApplet {
 
         } 
         if (mouseX >= 920 && mouseX <= 1067 && mouseY >= 318 && mouseY <= 746){
-
+          doorLock = false;
           
           for (int i = 0; i < steps.length; i++) {
             if (steps[i] == 1) {
@@ -212,6 +206,7 @@ public class Sketch extends PApplet {
         printToy3();
         printToy4();
 
+        howToPlay();
         exit();
 
         //highlight box and calls method to change the side of said box
@@ -274,6 +269,7 @@ public class Sketch extends PApplet {
         darkBackground();
         flashlight();
 
+        howToPlay();
         exit();
         
       } else if(scene == 6) {
@@ -284,6 +280,7 @@ public class Sketch extends PApplet {
 
         darkBackground();
 
+        howToPlay();
         exit();
 
         if (correct == true) {
@@ -308,6 +305,7 @@ public class Sketch extends PApplet {
         steps[5] = 1;
 
         flashlight();
+        howToPlay();
         exit();
 
       } else if (scene == 8) {
@@ -332,7 +330,6 @@ public class Sketch extends PApplet {
 
         if (safeUnlocked == false) {
           safeDraw(); 
-
           for (int i = 0; i < 4; i++) {
 
             if (mouseX >= safeX[i] - 75 && mouseX <= safeX[i] + 75 && mouseY >= safeY[i] - 75 && mouseY <= safeY[i] + 75) {
@@ -356,12 +353,26 @@ public class Sketch extends PApplet {
             }
           }
         }
+        howToPlay();
         exit();
+      } else if (scene == -1) {
+
+        fill(88, 85, 90);
+        stroke(88, 85, 90);
+        rect(0, 0, 1500, 1000);
+
+        fill(255);
+        stroke(255);
+        textSize(35);
+
+        text("Exclamation mark (!) means how to play the game, Question ark (?) means hint.", 70, 500);
+
+        exit();
+      
       }
 
     timer();
     help();
-    howToPlay();
     hint();
 }
   public void mouseDragged() {
@@ -380,28 +391,54 @@ public class Sketch extends PApplet {
   * Computes and prints the amount of time played
   */
   public void timer() {
-    int seconds = second();
-    int minutes = minute();
-    int hours = hour();
 
+    int time;
+
+    time = (int) timer / 1000;
+    
+    /*if (millis() > timer + timerIncrease) {
+      timer = millis();
+    }
 
     stroke(255);
     fill(255);
     textSize(25);
 
-    text((hours - startingHours) + "/" + (minutes - startingMinutes) + "/" + (seconds - startingSeconds), 25, 35);
+    text((timer / 3600000) + "/" + (timer / 60000) + "/" + (timer / 1000), 25, 35);*/
+
+    stroke(255);
+    fill(255);
+    textSize(25);
+
+    text((time), 25, 35);
     
   }
 
 
   public void help() {
 
+    stroke(255);
+    fill(88, 85, 90);
+    rect(325, 0, 150, 50);
+
+    stroke(255);
+    fill(255);
+    textSize(50);
+
+    text("HELP", 340, 42);
+
+    if (mousePressed) {
+      if (mouseX >= 325 && mouseX <= 475 && mouseY >= 0 && mouseY <= 50) {
+        previousScene = scene;
+        scene = -1;
+      }
+    }
   }
 
   public void howToPlay() {
 
     stroke(255);
-    fill(0);
+    fill(88, 85, 90);
     ellipse(150, 25, 50, 50);
 
     stroke(255);
@@ -414,39 +451,139 @@ public class Sketch extends PApplet {
       if (mouseX >= 100 && mouseX <= 200 && mouseY >= 0 && mouseY <= 75) {
 
         if (scene == 1) {
+
           previousScene = 1;
           scene = 8;
           text = "Interact with objects by clicking and dragging them.";
+          howToPlay++;
+
         } else if (scene == 2) {
+
           previousScene = 2;
           scene = 8;
           text = "Move the mouse to the box and use the arrow keys to change the face of the box.";
+          howToPlay++;
+
         } else if (scene == 5) {
+
           previousScene = 5;
           scene = 8;
           text = "Move the mouse to move the flashlight";
+          howToPlay++;
+
         } else if (scene == 6) {
+
           previousScene = 6;
           scene = 8;
           text = "Use the number keys to enter code.";
+          howToPlay++;
+
         } else if (scene == 7) {
+
           previousScene = 7;
           scene = 8;
           text = "Move the mouse to move the flashlight";
+          howToPlay++;
+
         } else if (scene == 9 && safeUnlocked == false) {
+
           previousScene = 9;
           scene = 8;
           text = "Move the mouse to a circle and use the arrow keys to change the position.";
+          howToPlay++;
+
         } else if (scene == 9 && safeUnlocked == true) {
+
           previousScene = 9;
           scene = 8;
           text = "Interact with objects by clicking on them.";
+          howToPlay++;
         }
       }
     }
   }
   
   public void hint() {
+
+    stroke(255);
+    fill(88, 85, 90);
+    ellipse(250, 25, 50, 50);
+
+    stroke(255);
+    fill(255);
+    textSize(50);
+
+    text("?", 242, 42);
+
+    if (mousePressed) {
+      if (mouseX >= 200 && mouseX <= 300 && mouseY >= 0 && mouseY <= 75) {
+
+        if (scene == 1) {
+
+          previousScene = 1;
+          scene = 8;
+          text = "What do the objects in the room do?";
+          hints++;
+
+        } else if (scene == 2) {
+
+          previousScene = 2;
+          scene = 8;
+          text = "I wonder what words these letters make.";
+          hints++;
+
+        } else if (scene == 5) {
+
+          previousScene = 5;
+          scene = 8;
+          text = "Its too scary and dark, I don't think anything is out there.";
+          hints++;
+
+        } else if (scene == 6) {
+          
+          previousScene = 6;
+          scene = 8;
+          text = "Was there a clue to the order of the numbers?";
+          hints++;
+
+        } else if (scene == 7) {
+
+          previousScene = 7;
+          scene = 8;
+          text = "There's something hidden but its too dark.";
+          hints++;
+
+        } else if (scene == 9 && safeUnlocked == false) {
+
+          previousScene = 9;
+          scene = 8;
+          text = "The colours on the circle and on the lines can't be a coincidence.";
+          hints++;
+
+        } else if (scene == 9 && safeUnlocked == true) {
+
+          previousScene = 9;
+          scene = 8;
+          text = "There is something scratched inside I think.";
+          hints++;
+
+        } else if (scene == 3) {
+
+          previousScene = 3;
+          scene = 8;
+          text = "This seems like a poem, I wonder if there is a hidden message.";
+          hints++;
+
+        } else if (scene == 4) {
+
+          previousScene = 4;
+          scene = 8;
+          text = "There is some order to the log... I wonder if that means anything";
+          hints++;
+
+        }
+      }
+    }
 
   }
 
@@ -915,8 +1052,6 @@ public class Sketch extends PApplet {
     float[] numberValue = new float [4];
     float[] code = {9, 4, 5, 7};
 
-    correct = true;
-
     stroke(255);
     fill(255);
     line(420, 250, 570, 250);
@@ -955,61 +1090,61 @@ public class Sketch extends PApplet {
 
     if (keyPressed) {
 
-      if (key == '1'){
+      if (key == 1){
 
         image(one, numberX, numberY);
         numberValue[numberPosition] = 1;
         numberPosition++;
 
-      } else if (key == '2'){
+      } else if (key == 2){
 
         image(two, numberX, numberY);
         numberValue[numberPosition] = 2;
         numberPosition++;
 
-      } else if (key == '3') {
+      } else if (key == 3) {
 
         image(three, numberX, numberY);
         numberValue[numberPosition] = 3;
         numberPosition++;
 
-      } else if (key == '4') {
+      } else if (key == 4) {
 
         image(four, numberX, numberY);
         numberValue[numberPosition] = 4;
         numberPosition++;
 
-      } else if (key == '5') {
+      } else if (key == 5) {
 
         image(five, numberX, numberY);
         numberValue[numberPosition] = 5;
         numberPosition++;
 
-      } else if (key =='6') {
+      } else if (key ==6) {
 
         image(six, numberX, numberY);
         numberValue[numberPosition] = 6;
         numberPosition++;
 
-      } else if (key == '7') {
+      } else if (key == 7) {
 
         image(seven, numberX, numberY);
         numberValue[numberPosition] = 7;
         numberPosition++;
 
-      } else if (key == '8') {
+      } else if (key == 8) {
 
         image(eight, numberX, numberY);
         numberValue[numberPosition] = 8;
         numberPosition++;
 
-      } else if (key == '9') {
+      } else if (key == 9) {
 
         image(nine, numberX, numberY);
         numberValue[numberPosition] = 9;
         numberPosition++;
 
-      } else if (key == '0') {
+      } else if (key == 0) {
 
         image(zero, numberX, numberY);
         numberValue[numberPosition] = 0;
@@ -1023,16 +1158,23 @@ public class Sketch extends PApplet {
 
         for (int i = 0; i < code.length; i++) {
 
-          if (code[i] == numberValue[i]) {
+          if (code[i] != numberValue[i]) {
 
-          } else {
             previousScene = scene;
             scene = 8;
             text = "Code is incorrect. Please try again.";
-            correct = false;
+            correct = false; 
+
+          } else {
+            correct = true;
           }
         }
-      }
+
+        // Wipes code
+        for (int j = 0; j < numberValue.length; j++) {
+          numberValue[j] = 0;
+        }
+      }  
     }
 
 

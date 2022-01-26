@@ -367,6 +367,7 @@ public class Sketch extends PApplet {
 
         text("Exclamation mark (!) means how to play the game, Question ark (?) means hint.", 70, 500);
 
+        howToPlay();
         exit();
       
       }

@@ -3,8 +3,10 @@ import processing.core.PImage;
 
 public class Sketch extends PApplet {
 
+  // To create text
   public float textX = 300;
   public float textY = 900;
+  public String text;
   
   PImage bed;
   PImage flashlight;
@@ -44,7 +46,6 @@ public class Sketch extends PApplet {
   public char[] toyBox2 = {'H', 'E', 'I', 'N', 'T', 'A'};
   public char[] toyBox3 = {'U', 'I', 'E', 'N', 'S', 'O'};
   public char[] toyBox4 = {'E', 'H', 'T', 'S', 'N', 'I'};
-  //public ArrayList<PImage> toyBox = new ArrayList<PImage>();
 
   public float toyBox1Front = 0;
   public float toyBox2Front = 0;
@@ -52,7 +53,7 @@ public class Sketch extends PApplet {
   public float toyBox4Front = 0;
 
   /*
-  scene 1 = original background (background 1)
+  scene 1 = original background / menu 
   scene 2 = toys
   scene 3 = page
   scene 4 = page 2 (in the safe with how to input the numbers)  
@@ -61,6 +62,7 @@ public class Sketch extends PApplet {
   scene 7 = bed
   scene 8 = text
   scene 9 = safe
+  scene -1 = help
   */
 
   public float scene = 1;
@@ -74,14 +76,18 @@ public class Sketch extends PApplet {
 
   public boolean activityOpen;
 
-  public String text;
-
   public boolean paintingMoved;
 
   public boolean safeUnlocked = false;
 
   public float timer;
   public float timerIncrease = 1000;
+  public int time;
+  public int minutes = 0;
+  public int hours = 0;
+  public int endTime;
+  public int endMinutes;
+  public int endHours;
 
   public float [] safeX = {900, 600, 600, 750};
   public float [] safeY = {525, 675, 525, 375};
@@ -94,9 +100,9 @@ public class Sketch extends PApplet {
   public int howToPlay;
 
   public int numberPosition = 0;
-
   public float[] numberValue = {-1, -1, -1, -1};
 
+  public boolean end = false;
   public void settings() {
     size(1500, 1000);
   }
@@ -143,11 +149,14 @@ public class Sketch extends PApplet {
   public void draw() {
     timer = millis();
 	  
+    // If-else loop to check what scene is it and what happens at that scene. 
     if (scene == 1) {
       background();
       howToPlay();
       
       timer();
+
+      // Move to different scene.
       if (mousePressed){
 
         if (mouseX >= 206 && mouseX <= 366 && mouseY >= 690 && mouseY <= 840){
@@ -173,6 +182,7 @@ public class Sketch extends PApplet {
         if (mouseX >= 920 && mouseX <= 1067 && mouseY >= 318 && mouseY <= 746){
           doorLock = false;
           
+          // To prevent the user from skipping to the end and guessing the code.
           for (int i = 0; i < steps.length; i++) {
             if (steps[i] == 1) {
             } else {
@@ -203,7 +213,7 @@ public class Sketch extends PApplet {
          
         darkBackground();
         
-        //print box
+        // print box
         printToy1();
         printToy2();
         printToy3();
@@ -212,7 +222,7 @@ public class Sketch extends PApplet {
         howToPlay();
         exit();
 
-        //highlight box and calls method to change the side of said box
+        // highlights box and calls method to change the side of said box.
         if (mouseX >= 300 && mouseX <= 410 && mouseY >= 450 && mouseY <= 560){
 
           toyBox1();
@@ -287,6 +297,7 @@ public class Sketch extends PApplet {
         howToPlay();
         exit();
 
+        // Check if the code is correct.
         if (correct == true) {
           endScreen();
         }
@@ -301,6 +312,7 @@ public class Sketch extends PApplet {
         fill(0, 0, 0, 150);
         rect(0, 0, 1500, 1000);
 
+        // Creates a black rectangle over the number so the player has to go over the number to see it.
         if (mouseX <= 144 || mouseX >= 379 || mouseY >= 583 || mouseY <= 348){
           stroke(0);
           fill(0);
@@ -322,6 +334,7 @@ public class Sketch extends PApplet {
 
         text(text, textX, textY);
 
+        // To change back to the original scene after pressing leave on the textbox.
         if (mousePressed) {
           if (mouseX >= 1200 && mouseX <= 1300 && mouseY >= 800 && mouseY <= 900){
             scene = previousScene;
@@ -332,6 +345,7 @@ public class Sketch extends PApplet {
 
         darkBackground();
 
+        // This is to check if the safe is unlocked and should go to inside the safe or to go to the mini game to unlock the safe.
         if (safeUnlocked == false) {
           safeDraw(); 
           for (int i = 0; i < 4; i++) {
@@ -357,6 +371,7 @@ public class Sketch extends PApplet {
             }
           }
         }
+
         howToPlay();
         exit();
       } else if (scene == -1) {
@@ -382,6 +397,7 @@ public class Sketch extends PApplet {
 }
   public void mouseDragged() {
     
+    // To drag away the painting to reveal the safe.
     if (scene == 1) {
       if (mouseX >= 1200 && mouseX <= 1400 && mouseY >= 360 && mouseY <= 490){
         paintingX = mouseX;
@@ -393,24 +409,36 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Computes and prints the amount of time played
+  * Computes and prints the amount of time played.
   */
   public void timer() {
 
-    int time;
+    if (hours > 0 && minutes > 0) {
+      time = (int) timer / 1000 - (minutes * 60000) - (hours * 3600000);
+    } else if (minutes > 0 && hours == 0) {
+      time = (int) timer / 1000 - (minutes * 60000);
+    } else {
+      time = (int) timer / 1000;
+    }
+    
 
-    time = (int) timer / 1000;
+    if (time >= 60) {
+      minutes++;
+    } 
+    if (minutes >= 60) {
+      hours++;
+    }
     
     stroke(255);
     fill(255);
     textSize(25);
 
-    text((time), 25, 35);
+    text(hours + "/" + minutes + "/" + time, 25, 35);
     
   }
 
   /*
-  * Creates help button and directs user to the help scene 
+  * Creates help button and directs user to the help scene. 
   */
 
   public void help() {
@@ -434,7 +462,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Creates howToPlay buttom and tells the user how to play where applicable 
+  * Creates howToPlay buttom and tells the user how to play where applicable. 
   */
   public void howToPlay() {
 
@@ -448,6 +476,7 @@ public class Sketch extends PApplet {
 
     text("!", 142, 42);
 
+    // This checks what scene it is and prints how to play that scene. 
     if (mousePressed) {
       if (mouseX >= 100 && mouseX <= 200 && mouseY >= 0 && mouseY <= 75) {
 
@@ -505,7 +534,7 @@ public class Sketch extends PApplet {
   }
   
   /*
-  * Create hint button and based on the scene, gives a hint
+  * Create hint button and based on the scene, gives a hint.
   */
   public void hint() {
 
@@ -519,6 +548,7 @@ public class Sketch extends PApplet {
 
     text("?", 242, 42);
 
+    // This checks what the scene is and gives a hint for that scene. 
     if (mousePressed) {
       if (mouseX >= 200 && mouseX <= 300 && mouseY >= 0 && mouseY <= 75) {
 
@@ -592,7 +622,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints the correct background based on how far into the game
+  * Prints the correct background based on how far into the game.
   */
   public void background() {
 
@@ -626,7 +656,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints a dark background
+  * Prints a dark background.
   */
   public void darkBackground() {
 
@@ -636,7 +666,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints a textbox
+  * Prints a textbox.
   */
   public void textBox() {
     stroke(255);
@@ -654,7 +684,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints an exit circle
+  * Prints an exit circle.
   */
   public void exit() {
     stroke(255);
@@ -676,7 +706,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * checks if keycodes have been pressed for toybox 1 then changes the sides of the box accordingly 
+  * Checks if keycodes have been pressed for toybox 1 then changes the sides of the box accordingly. 
   */
   public void flashlight() {
     float opacity = 40;
@@ -695,7 +725,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * checks if keycodes have been pressed for toybox 1 then changes the sides of the box accordingly 
+  * Checks if keycodes have been pressed for toybox 1 then changes the sides of the box accordingly. 
   */
   public void toyBox1() {
 
@@ -742,7 +772,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * checks if keycodes have been pressed for toybox 2 then changes the sides of the box accordingly 
+  * Checks if keycodes have been pressed for toybox 2 then changes the sides of the box accordingly. 
   */
   public void toyBox2() {
 
@@ -789,7 +819,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * checks if keycodes have been pressed for toybox 3 then changes the sides of the box accordingly 
+  * Checks if keycodes have been pressed for toybox 3 then changes the sides of the box accordingly. 
   */
   public void toyBox3() {
 
@@ -836,7 +866,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * checks if keycodes have been pressed for toybox 4 then changes the sides of the box accordingly 
+  * Checks if keycodes have been pressed for toybox 4 then changes the sides of the box accordingly. 
   */
   public void toyBox4() {
 
@@ -883,7 +913,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints the correct letter for toybox 1
+  * Prints the correct letter for toybox 1.
   */
   public void printToy1() {
     float x = 300;
@@ -924,7 +954,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints the correct letter for toybox 2
+  * Prints the correct letter for toybox 2.
   */
   public void printToy2() {
     float x = 550;
@@ -965,7 +995,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints the correct letter for toybox 3
+  * Prints the correct letter for toybox 3.
   */
   public void printToy3() {
     float x = 800;
@@ -1006,7 +1036,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints the correct letter for toybox 4
+  * Prints the correct letter for toybox 4.
   */
   public void printToy4() {
     float x = 1050;
@@ -1047,7 +1077,7 @@ public class Sketch extends PApplet {
   }
   
   /*
-  * Prints imputted code
+  * Prints imputted code.
   */
   public void printDoor() {
 
@@ -1127,7 +1157,7 @@ public class Sketch extends PApplet {
   }
   
   /*
-  * Checks what the player has inputed for the code and prints if correct or incorrect as well as if the code is too short
+  * Checks what the player has inputed for the code and prints if correct or incorrect as well as if the code is too short.
   */
   public void door() {
 
@@ -1153,96 +1183,88 @@ public class Sketch extends PApplet {
     image(nine, 825, 600);
     image(zero, 675, 750);
 
-    if (numberPosition == 0){
-      
-      numberX = 420;
-
-    } else if (numberPosition == 1){
-
-      numberX = 590;
-
-    } else if (numberPosition == 2){
-
-      numberX = 760;
-
-    } else if (numberPosition == 3) {
-
-      numberX = 930;
-
-    }
-
     if (keyPressed) {
 
       if (key == '1'){
 
-        image(one, numberX, numberY);
         numberValue[numberPosition] = 1;
         numberPosition++;
 
       } else if (key == '2'){
 
-        image(two, numberX, numberY);
         numberValue[numberPosition] = 2;
         numberPosition++;
 
       } else if (key == '3') {
 
-        image(three, numberX, numberY);
         numberValue[numberPosition] = 3;
         numberPosition++;
 
       } else if (key == '4') {
 
-        image(four, numberX, numberY);
         numberValue[numberPosition] = 4;
         numberPosition++;
 
       } else if (key == '5') {
 
-        image(five, numberX, numberY);
         numberValue[numberPosition] = 5;
         numberPosition++;
 
       } else if (key == '6') {
 
-        image(six, numberX, numberY);
         numberValue[numberPosition] = 6;
         numberPosition++;
 
       } else if (key == '7') {
 
-        image(seven, numberX, numberY);
         numberValue[numberPosition] = 7;
         numberPosition++;
 
       } else if (key == '8') {
 
-        image(eight, numberX, numberY);
         numberValue[numberPosition] = 8;
         numberPosition++;
 
       } else if (key == '9') {
 
-        image(nine, numberX, numberY);
         numberValue[numberPosition] = 9;
         numberPosition++;
 
       } else if (key == '0') {
 
-        image(zero, numberX, numberY);
         numberValue[numberPosition] = 0;
         numberPosition++;
 
       }
 
       if (key == DELETE || key == BACKSPACE) {
-
+        
         numberPosition--;
         numberValue[numberPosition] = -1;
+
+        if (numberPosition == 0){
+      
+          numberX = 420;
+    
+        } else if (numberPosition == 1){
+    
+          numberX = 590;
+    
+        } else if (numberPosition == 2){
+    
+          numberX = 760;
+    
+        } else if (numberPosition == 3) {
+    
+          numberX = 930;
+    
+        }
+
         rect(numberX, numberY, 150, 150);
       }
     }
 
+    // Checks if imputted code is right.
     if (keyPressed) {
       if (key == ENTER || key == RETURN){
 
@@ -1260,10 +1282,10 @@ public class Sketch extends PApplet {
           }
         }
 
-      // Wipes code
+      // Wipes the code if it is wrong. 
       if (correct == false) {
         for (int j = 0; j < numberValue.length; j++) {
-          numberValue[j] = 0;
+          numberValue[j] = -1;
         }
       } 
       }  
@@ -1273,7 +1295,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Checks if there is a barrier in what direction of the selected circle then computes what will happen if key arrows are pressed
+  * Checks if there is a barrier in what direction of the selected circle then computes what will happen if key arrows are pressed.
   */
   public void safe() {
     
@@ -1282,6 +1304,7 @@ public class Sketch extends PApplet {
     boolean upBarrier = false;
     boolean downBarrier = false;
 
+    // Checks if the circle that the mouse is on has any barriers for each direction.
     if (safeX[circleSelected] - 150 < 525) {
       leftBarrier = true;
     } 
@@ -1311,6 +1334,7 @@ public class Sketch extends PApplet {
       } 
     }
 
+    // This makes sure that it can only move if there is no barrier in that direction.
     if (keyPressed) {
       if (keyCode == UP && upBarrier == false){
         
@@ -1333,7 +1357,7 @@ public class Sketch extends PApplet {
   }
 
   /*
-  * Prints out the grid and the circles. It also checks if safe is unlocked
+  * Prints out the grid and the circles. It also checks if safe is unlocked.
   */
   public void safeDraw() {
 
@@ -1397,6 +1421,7 @@ public class Sketch extends PApplet {
     fill(0, 255, 0);
     ellipse(safeX[3], safeY[3], 75, 75);
 
+    // This checks if all the circles are in the right box to unlock the safe.
     if (safeX[0] == 600 && safeX[1] == 900 && safeX[2] == 900 && safeX[3] == 600 && safeY[0] == 375 && safeY[1] == 375 && safeY[2] == 675 && safeY[3] == 675) {
 
       safeUnlocked = true;
@@ -1407,7 +1432,17 @@ public class Sketch extends PApplet {
     }
   }
 
+  /*
+  * This creates the end screen after the game has been beaten. 
+  */
   public void endScreen() {
+    
+    if (end == false) {
+      endTime = time;
+      endMinutes = minutes;
+      endHours = hours;
+      end = true;
+    }
 
       stroke(255);
       fill(88, 85, 90);
@@ -1421,6 +1456,11 @@ public class Sketch extends PApplet {
       text("Special thanks to Nathan Wan(myself), Mr. Fabroa, and my cousins.", 280, 500);
       text("New levels will be added soon!", 510, 600);
     
+      textSize(20);
+      text("Time Spent: " + (endHours) + "/" + (endMinutes) + "/" + (endTime), 100, 100);
+      text("howToPlay used: " + howToPlay, 100, 140);
+      text("Hints used: " + hints, 100, 160);
+
   }
 
 }

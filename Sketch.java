@@ -103,6 +103,7 @@ public class Sketch extends PApplet {
   public float[] numberValue = {-1, -1, -1, -1};
 
   public boolean end = false;
+
   public void settings() {
     size(1500, 1000);
   }
@@ -185,6 +186,7 @@ public class Sketch extends PApplet {
           // To prevent the user from skipping to the end and guessing the code.
           for (int i = 0; i < steps.length; i++) {
             if (steps[i] == 1) {
+
             } else {
               scene = 8;
               text = "This door seems to be locked. I wonder if there are any clues to what the code might be.";
@@ -336,7 +338,7 @@ public class Sketch extends PApplet {
 
         // To change back to the original scene after pressing leave on the textbox.
         if (mousePressed) {
-          if (mouseX >= 1200 && mouseX <= 1300 && mouseY >= 800 && mouseY <= 900){
+          if (mouseX >= 1200 && mouseX <= 1300 && mouseY >= 800 && mouseY <= 900) {
             scene = previousScene;
           }
         }

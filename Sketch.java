@@ -414,9 +414,10 @@ public class Sketch extends PApplet {
   public void timer() {
 
     if (hours > 0 && minutes > 0) {
-      time = (int) timer / 1000 - (minutes * 60000) - (hours * 3600000);
+      time = (int) timer / 1000 - (minutes * 60) - (int) (hours * 3600);
+      
     } else if (minutes > 0 && hours == 0) {
-      time = (int) timer / 1000 - (minutes * 60000);
+      time = (int) timer / 1000 - (minutes * 60);
     } else {
       time = (int) timer / 1000;
     }
@@ -427,6 +428,7 @@ public class Sketch extends PApplet {
     } 
     if (minutes >= 60) {
       hours++;
+      minutes = minutes - 60;
     }
     
     stroke(255);
